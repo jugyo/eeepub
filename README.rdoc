@@ -1,6 +1,10 @@
-= eeepub
+= EeePub
 
-Ruby ePub generator.
+EeePub is a Ruby ePub generator.
+
+== Synopsis
+
+Show examples.
 
 == Copyright
 

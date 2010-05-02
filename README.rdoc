@@ -2,6 +2,10 @@
 
 EeePub is a Ruby ePub generator.
 
+== Install
+
+  gem install eeepub
+
 == Synopsis
 
 Show examples: http://github.com/jugyo/EeePub/tree/master/examples/

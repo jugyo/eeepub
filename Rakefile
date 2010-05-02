@@ -6,7 +6,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "eeepub"
     gem.summary = %Q{ePub generator}
-    gem.description = %Q{Ruby ePub generator.}
+    gem.description = %Q{EeePub is a Ruby ePub generator.}
     gem.email = "jugyo.org@gmail.com"
     gem.homepage = "http://github.com/jugyo/eeepub"
     gem.authors = ["jugyo"]

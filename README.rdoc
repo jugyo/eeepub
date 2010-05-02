@@ -4,7 +4,7 @@ EeePub is a Ruby ePub generator.
 
 == Synopsis
 
-Show examples.
+Show examples: http://github.com/jugyo/EeePub/tree/master/examples/
 
 == Copyright
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
+  <head>
+    <meta name="dtb:uid" content="<%=h uid %>"/>
+    <meta name="dtb:depth" content="<%=h depth %>"/>
+    <meta name="dtb:totalPageCount" content="<%=h total_page_count %>"/>
+    <meta name="dtb:maxPageNumber" content="<%=h max_page_number %>"/>
+  </head>
+  <docTitle>
+    <text><%=h doc_title %></text>
+  </docTitle>
+  <navMap>
+    <%- nav_points.each do |nav| -%>
+    <navPoint id="<%=h nav[:id] %>" playOrder="<%=h nav[:play_order] %>">
+      <navLabel>
+        <text><%=h nav[:label] %></text>
+      </navLabel>
+      <content src="<%=h nav[:content] %>"/>
+    </navPoint>
+    <%- end -%>
+  </navMap>
+</ncx>

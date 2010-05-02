@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package version="2.0" xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookId">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+    <dc:title><%=h title %></dc:title>
+    <dc:language><%=h language %></dc:language>
+    <dc:identifier id="BookId"><%=h identifier %></dc:identifier>
+    <%- if date -%>
+    <dc:date><%=h date.to_s %></dc:data>
+    <%- end -%>
+    <%- if subject -%>
+    <dc:subject><%=h subject %></dc:subject>
+    <%- end -%>
+    <%- if description -%>
+    <dc:description><%=h description %></dc:description>
+    <%- end -%>
+    <%- if relation -%>
+    <dc:relation><%=h relation %></dc:relation>
+    <%- end -%>
+    <%- if creator -%>
+    <dc:creator opf:role="aut"><%=h creator %></dc:creator>
+    <%- end -%>
+    <%- if publisher -%>
+    <dc:publisher><%=h publisher %></dc:publisher>
+    <%- end -%>
+    <%- if rights -%>
+    <dc:rights><%=h rights %></dc:rights>
+    <%- end -%>
+  </metadata>
+  <manifest>
+    <%- items.each do |item| -%>
+    <item id="<%=h item[:id] %>" href="<%=h item[:href] %>" media-type="<%=h item[:media_type] %>" />
+    <%- end -%>
+  </manifest>
+  <spine toc="ncx">
+    <%- itemrefs.each do |itemref| -%>
+    <itemref idref="<%=h itemref[:idref] %>" />
+    <%- end -%>
+  </spine>
+</package>

@@ -7,9 +7,8 @@ module EeePub
 
     attr_accessor :dir, :container
 
-    def initialize(dir, contents)
-      @dir = dir
-      contents.each do |k, v|
+    def initialize(values)
+      values.each do |k, v|
         self.send(:"#{k}=", v)
       end
     end

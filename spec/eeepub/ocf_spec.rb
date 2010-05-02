@@ -10,7 +10,7 @@ describe "EeePub::OCF" do
     @container = EeePub::OCF::Container.new(
       :rootfiles => [{:full_path => 'foo.opf', :media_type => 'application/oebps-package+xml'}]
     )
-    @ocf = EeePub::OCF.new(@tmpdir, :container => @container)
+    @ocf = EeePub::OCF.new(:dir => @tmpdir, :container => @container)
   end
 
   after do

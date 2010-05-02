@@ -48,14 +48,14 @@ EeePub::OPF.new(
     {:idref => 'foo'},
     {:idref => 'bar'}
   ]
-).save(File.join(dir, 'package.opf'))
+).save(File.join(dir, 'content.opf'))
 
 # Create OCF
 EeePub::OCF.new(
   :dir => dir,
   :container => EeePub::OCF::Container.new(
     :rootfiles => [
-      {:full_path => 'package.opf', :media_type => 'application/oebps-package+xml'}
+      {:full_path => 'content.opf', :media_type => 'application/oebps-package+xml'}
     ]
   )
 ).make(epub_name)

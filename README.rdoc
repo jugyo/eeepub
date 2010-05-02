@@ -6,7 +6,7 @@ EeePub is a Ruby ePub generator.
 
   gem install eeepub
 
-== Synopsis
+== Usage
 
 Show examples: http://github.com/jugyo/EeePub/tree/master/examples/
 

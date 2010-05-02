@@ -14,6 +14,8 @@ module EeePub
     end
 
     def make(output_path)
+      output_path = File.expand_path(output_path)
+
       FileUtils.chdir(dir) do
         File.open('mimetype', 'w') do |f|
           f << 'application/epub+zip'

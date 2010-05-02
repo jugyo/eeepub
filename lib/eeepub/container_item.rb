@@ -4,6 +4,8 @@ module EeePub
   class ContainerItem
     include ERB::Util
 
+    TEMPLATE_DIR = File.expand_path(File.join(File.dirname(__FILE__), 'templates'))
+
     class << self
       attr_reader :template_name
 
@@ -28,7 +30,7 @@ module EeePub
 
     def erb(filename)
       ERB.new(
-        File.read(File.expand_path("templates/#{filename}", File.dirname(__FILE__))),
+        File.read(File.join(TEMPLATE_DIR, filename)),
         nil,
         '-'
       )

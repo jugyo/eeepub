@@ -28,7 +28,7 @@ end
 # Create NCX
 EeePub::NCX.new(
   :uid => 'xxxx', :doc_title => 'simple',
-  :nav_points => [
+  :nav_map => [
     {:id => 'nav-1', :play_order => '1', :label => '1. foo', :content => 'foo.html'},
     {:id => 'nav-2', :play_order => '2', :label => '2. bar', :content => 'bar.html'}
   ]
@@ -39,12 +39,12 @@ EeePub::OPF.new(
   :title => 'simple',
   :language => 'ja',
   :identifier => 'xxxxxxx',
-  :items => [
+  :manifest => [
     {:id => 'ncx', :href => 'toc.ncx', :media_type => 'text/xml'},
     {:id => 'foo', :href => 'foo.html', :media_type => 'text/html'},
     {:id => 'bar', :href => 'bar.html', :media_type => 'text/html'},
   ],
-  :itemrefs => [
+  :spine => [
     {:idref => 'foo'},
     {:idref => 'bar'}
   ]

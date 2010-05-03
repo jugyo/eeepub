@@ -8,8 +8,8 @@ describe "EeePub::OPF" do
       :language => 'ja',
       :identifier => 'id',
       :manifest => [
-        {:id => 'foo', :href => 'foo.html', :media_type => 'text/html'},
-        {:id => 'bar', :href => 'bar.html', :media_type => 'text/html'},
+        {:id => 'foo', :href => 'foo.html', :media_type => 'application/xhtml+xml'},
+        {:id => 'bar', :href => 'bar.html', :media_type => 'application/xhtml+xml'},
         {:id => 'picture', :href => 'picture.png', :media_type => 'image/png'}
       ],
       :spine => [

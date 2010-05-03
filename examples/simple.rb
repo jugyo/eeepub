@@ -16,7 +16,10 @@ FileUtils.rm_f(epub_name)
     f << <<-HTML
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja">
+  <head>
+    <title></title>
+  </head>
   <body>
     <h1>#{name}</h1>
   </body>
@@ -40,9 +43,9 @@ EeePub::OPF.new(
   :language => 'ja',
   :identifier => 'xxxxxxx',
   :manifest => [
-    {:id => 'ncx', :href => 'toc.ncx', :media_type => 'text/xml'},
-    {:id => 'foo', :href => 'foo.html', :media_type => 'text/html'},
-    {:id => 'bar', :href => 'bar.html', :media_type => 'text/html'},
+    {:id => 'ncx', :href => 'toc.ncx', :media_type => 'application/x-dtbncx+xml'},
+    {:id => 'foo', :href => 'foo.html', :media_type => 'application/xhtml+xml'},
+    {:id => 'bar', :href => 'bar.html', :media_type => 'application/xhtml+xml'},
   ],
   :spine => [
     {:idref => 'foo'},

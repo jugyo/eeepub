@@ -1,7 +1,8 @@
 module EeePub
   class OPF < ContainerItem
     template 'opf.erb'
-    attr_accessor :title,
+    attr_accessor :unique_identifier,
+                  :title,
                   :language,
                   :identifier,
                   :date,

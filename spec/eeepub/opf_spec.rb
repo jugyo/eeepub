@@ -4,9 +4,10 @@ require 'date'
 describe "EeePub::OPF" do
   before do
     @opf = EeePub::OPF.new(
+      :unique_identifier => 'BookId',
       :title => 'title',
       :language => 'ja',
-      :identifier => 'id',
+      :identifier => {:id => 'BookId', :scheme => 'ISBN', :value => '978-4-00-310101-8'},
       :manifest => [
         {:id => 'foo', :href => 'foo.html', :media_type => 'application/xhtml+xml'},
         {:id => 'bar', :href => 'bar.html', :media_type => 'application/xhtml+xml'},
@@ -21,12 +22,12 @@ describe "EeePub::OPF" do
 
   it 'should export as xml' do
     doc  = Nokogiri::XML(@opf.to_xml)
+    doc.at('package').attribute('unique-identifier').value.should == @opf.unique_identifier
     metadata = doc.at('metadata')
     metadata.should_not be_nil
     [
       ['dc:title', @opf.title],
       ['dc:language', @opf.language],
-      ['dc:identifier', @opf.identifier],
       ['dc:date', ''],
       ['dc:subject', ''],
       ['dc:description', ''],
@@ -38,6 +39,10 @@ describe "EeePub::OPF" do
       metadata.xpath(xpath,
         'xmlns:dc' => "http://purl.org/dc/elements/1.1/").inner_text.should == expect
     end
+    identifier = metadata.xpath('dc:identifier', 'xmlns:dc' => "http://purl.org/dc/elements/1.1/")[0]
+    identifier.attribute('id').value.should == @opf.identifier[:id]
+    identifier.attribute('scheme').value.should == @opf.identifier[:scheme]
+    identifier.inner_text.should == @opf.identifier[:value]
 
     manifest = doc.at('manifest')
     manifest.should_not be_nil
@@ -80,7 +85,6 @@ describe "EeePub::OPF" do
       [
         ['dc:title', @opf.title],
         ['dc:language', @opf.language],
-        ['dc:identifier', @opf.identifier],
         ['dc:date', @opf.date.to_s],
         ['dc:subject', 'subject'],
         ['dc:description', 'description'],
@@ -92,6 +96,10 @@ describe "EeePub::OPF" do
         metadata.xpath(xpath,
           'xmlns:dc' => "http://purl.org/dc/elements/1.1/").inner_text.should == expect
       end
+      identifier = metadata.xpath('dc:identifier', 'xmlns:dc' => "http://purl.org/dc/elements/1.1/")[0]
+      identifier.attribute('id').value.should == @opf.identifier[:id]
+      identifier.attribute('scheme').value.should == @opf.identifier[:scheme]
+      identifier.inner_text.should == @opf.identifier[:value]
     end
   end
 end

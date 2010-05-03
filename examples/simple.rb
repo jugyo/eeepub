@@ -39,9 +39,10 @@ EeePub::NCX.new(
 
 # Create OPF
 EeePub::OPF.new(
+  :unique_identifier => 'BookId',
   :title => 'simple',
   :language => 'ja',
-  :identifier => 'xxxxxxx',
+  :identifier => {:id => 'BookId', :scheme => 'ISBN', :value => '0-0000000-0-0'},
   :manifest => [
     {:id => 'ncx', :href => 'toc.ncx', :media_type => 'application/x-dtbncx+xml'},
     {:id => 'foo', :href => 'foo.html', :media_type => 'application/xhtml+xml'},

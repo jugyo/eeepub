@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package version="2.0" xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookId">
+<package version="2.0" xmlns="http://www.idpf.org/2007/opf" unique-identifier="<%=h unique_identifier %>">
   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
     <dc:title><%=h title %></dc:title>
     <dc:language><%=h language %></dc:language>
-    <dc:identifier id="BookId"><%=h identifier %></dc:identifier>
+    <dc:identifier id="<%=h identifier[:id] %>" opf:scheme="<%=h identifier[:scheme] %>"><%=h identifier[:value] %></dc:identifier>
     <%- if date -%>
     <dc:date><%=h date.to_s %></dc:data>
     <%- end -%>

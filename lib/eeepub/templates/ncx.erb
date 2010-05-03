@@ -10,7 +10,7 @@
     <text><%=h doc_title %></text>
   </docTitle>
   <navMap>
-    <%- nav_points.each do |nav| -%>
+    <%- nav_map.each do |nav| -%>
     <navPoint id="<%=h nav[:id] %>" playOrder="<%=h nav[:play_order] %>">
       <navLabel>
         <text><%=h nav[:label] %></text>

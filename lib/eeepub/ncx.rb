@@ -6,7 +6,7 @@ module EeePub
                   :total_page_count,
                   :max_page_number,
                   :doc_title,
-                  :nav_points
+                  :nav_map
 
     def set_values(values)
       super

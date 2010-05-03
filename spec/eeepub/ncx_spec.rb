@@ -7,7 +7,7 @@ describe "EeePub::NCX" do
   before do
     @ncx = EeePub::NCX.new(
       :uid => 'uid', :doc_title => 'title',
-      :nav_points => [
+      :nav_map => [
         {:id => 'nav-1', :play_order => '1', :label => 'foo', :content => 'foo.html'},
         {:id => 'nav-2', :play_order => '2', :label => 'bar', :content => 'bar.html'}
       ]
@@ -34,7 +34,7 @@ describe "EeePub::NCX" do
     nav_map = doc.at('navMap')
     nav_map.should_not be_nil
     nav_map.search('navPoint').each_with_index do |nav_point, index|
-      expect = @ncx.nav_points[index]
+      expect = @ncx.nav_map[index]
       nav_point.attribute('id').value.should == expect[:id]
       nav_point.attribute('playOrder').value.should == expect[:play_order]
       nav_point.at('navLabel').at('text').inner_text.should == expect[:label]

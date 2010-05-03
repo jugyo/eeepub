@@ -6,12 +6,12 @@ describe "EeePub::OPF" do
       :title => 'title',
       :language => 'ja',
       :identifier => 'id',
-      :items => [
+      :manifest => [
         {:id => 'foo', :href => 'foo.html', :media_type => 'text/html'},
         {:id => 'bar', :href => 'bar.html', :media_type => 'text/html'},
         {:id => 'picture', :href => 'picture.png', :media_type => 'image/png'}
       ],
-      :itemrefs => [
+      :spine => [
         {:idref => 'foo'},
         {:idref => 'bar'}
       ]
@@ -40,10 +40,10 @@ describe "EeePub::OPF" do
 
     manifest = doc.at('manifest')
     manifest.should_not be_nil
-    items = manifest.search('item')
-    items.size.should == 3
-    items.each_with_index do |item, index|
-      expect = @opf.items[index]
+    manifest = manifest.search('item')
+    manifest.size.should == 3
+    manifest.each_with_index do |item, index|
+      expect = @opf.manifest[index]
       item.attribute('id').value.should == expect[:id]
       item.attribute('href').value.should == expect[:href]
       item.attribute('media-type').value.should == expect[:media_type]
@@ -51,10 +51,10 @@ describe "EeePub::OPF" do
 
     spine = doc.at('spine')
     spine.should_not be_nil
-    itemrefs = spine.search('itemref')
-    itemrefs.size.should == 2
-    itemrefs.each_with_index do |itemref, index|
-      expect = @opf.itemrefs[index]
+    spine = spine.search('itemref')
+    spine.size.should == 2
+    spine.each_with_index do |itemref, index|
+      expect = @opf.spine[index]
       itemref.attribute('idref').value.should == expect[:idref]
     end
   end

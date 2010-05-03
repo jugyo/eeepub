@@ -11,7 +11,7 @@ module EeePub
                   :creator,
                   :publisher,
                   :rights,
-                  :items,
-                  :itemrefs
+                  :manifest,
+                  :spine
   end
 end

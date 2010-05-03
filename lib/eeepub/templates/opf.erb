@@ -27,12 +27,12 @@
     <%- end -%>
   </metadata>
   <manifest>
-    <%- items.each do |item| -%>
+    <%- manifest.each do |item| -%>
     <item id="<%=h item[:id] %>" href="<%=h item[:href] %>" media-type="<%=h item[:media_type] %>" />
     <%- end -%>
   </manifest>
   <spine toc="ncx">
-    <%- itemrefs.each do |itemref| -%>
+    <%- spine.each do |itemref| -%>
     <itemref idref="<%=h itemref[:idref] %>" />
     <%- end -%>
   </spine>

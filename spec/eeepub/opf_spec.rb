@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'date'
 
 describe "EeePub::OPF" do
   before do

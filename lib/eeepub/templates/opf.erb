@@ -2,8 +2,12 @@
 <package version="2.0" xmlns="http://www.idpf.org/2007/opf" unique-identifier="<%=h unique_identifier %>">
   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
     <dc:title><%=h title %></dc:title>
-    <dc:language><%=h language %></dc:language>
-    <dc:identifier id="<%=h identifier[:id] %>" opf:scheme="<%=h identifier[:scheme] %>"><%=h identifier[:value] %></dc:identifier>
+    <%- [language].flatten.each do |i| -%>
+    <dc:language><%=h i %></dc:language>
+    <%- end -%>
+    <%- [identifier].flatten.each do |i| -%>
+    <dc:identifier id="<%=h i[:id] %>" opf:scheme="<%=h i[:scheme] %>"><%=h i[:value] %></dc:identifier>
+    <%- end -%>
     <%- if date -%>
     <dc:date><%=h date.to_s %></dc:data>
     <%- end -%>

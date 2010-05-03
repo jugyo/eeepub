@@ -102,4 +102,40 @@ describe "EeePub::OPF" do
       identifier.inner_text.should == @opf.identifier[:value]
     end
   end
+
+  context 'plural identifiers' do
+    before do
+      @opf.identifier = [
+        {:id => 'BookId', :scheme => 'ISBN', :value => '978-4-00-310101-8'},
+        {:id => 'BookURL', :scheme => 'URL', :value => 'http://example.com/books/foo'}
+      ]
+    end
+
+    it 'should export as xml' do
+      doc  = Nokogiri::XML(@opf.to_xml)
+      elements = doc.xpath('//dc:identifier', 'xmlns:dc' => "http://purl.org/dc/elements/1.1/")
+      elements.size.should == 2
+      elements.each_with_index do |element, index|
+        expect = @opf.identifier[index]
+        element.attribute('id').value.should == expect[:id]
+        element.attribute('scheme').value.should == expect[:scheme]
+        element.inner_text.should == expect[:value]
+      end
+    end
+  end
+
+  context 'plural languages' do
+    before do
+      @opf.language = ['ja', 'en']
+    end
+
+    it 'should export as xml' do
+      doc  = Nokogiri::XML(@opf.to_xml)
+      elements = doc.xpath('//dc:language', 'xmlns:dc' => "http://purl.org/dc/elements/1.1/")
+      elements.size.should == 2
+      elements.each_with_index do |element, index|
+        element.inner_text.should == @opf.language[index]
+      end
+    end
+  end
 end

@@ -13,10 +13,7 @@ describe "EeePub::OPF" do
         {:id => 'bar', :href => 'bar.html', :media_type => 'application/xhtml+xml'},
         {:id => 'picture', :href => 'picture.png', :media_type => 'image/png'}
       ],
-      :spine => [
-        {:idref => 'foo'},
-        {:idref => 'bar'}
-      ],
+      :spine => ['foo', 'bar'],
       :toc => 'ncx'
     )
   end
@@ -62,7 +59,7 @@ describe "EeePub::OPF" do
     spine.size.should == 2
     spine.each_with_index do |itemref, index|
       expect = @opf.spine[index]
-      itemref.attribute('idref').value.should == expect[:idref]
+      itemref.attribute('idref').value.should == expect
     end
   end
 

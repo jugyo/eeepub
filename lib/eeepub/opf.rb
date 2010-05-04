@@ -58,7 +58,7 @@ module EeePub
     def build_spine(builder)
       builder.spine :toc => toc do
         spine.each do |i|
-          builder.itemref create_build_option(i)
+          builder.itemref :idref => i
         end
       end
     end

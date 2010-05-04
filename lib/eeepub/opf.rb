@@ -12,7 +12,8 @@ module EeePub
                   :publisher,
                   :rights,
                   :manifest,
-                  :spine
+                  :spine,
+                  :toc
 
     def build_xml(builder)
       builder.package :xmlns => "http://www.idpf.org/2007/opf",
@@ -55,7 +56,7 @@ module EeePub
     end
 
     def build_spine(builder)
-      builder.spine :toc => 'ncx' do
+      builder.spine :toc => toc do
         spine.each do |i|
           builder.itemref create_build_option(i)
         end

@@ -16,7 +16,8 @@ describe "EeePub::OPF" do
       :spine => [
         {:idref => 'foo'},
         {:idref => 'bar'}
-      ]
+      ],
+      :toc => 'ncx'
     )
   end
 

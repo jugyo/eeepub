@@ -51,7 +51,8 @@ EeePub::OPF.new(
   :spine => [
     {:idref => 'foo'},
     {:idref => 'bar'}
-  ]
+  ],
+  :toc => 'ncx'
 ).save(File.join(dir, 'content.opf'))
 
 # Create OCF

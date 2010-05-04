@@ -39,28 +39,14 @@ EeePub::NCX.new(
 
 # Create OPF
 EeePub::OPF.new(
-  :unique_identifier => 'BookId',
   :title => 'simple',
-  :language => 'ja',
-  :identifier => {:id => 'BookId', :scheme => 'ISBN', :value => '0-0000000-0-0'},
-  :manifest => [
-    {:id => 'ncx', :href => 'toc.ncx', :media_type => 'application/x-dtbncx+xml'},
-    {:id => 'foo', :href => 'foo.html', :media_type => 'application/xhtml+xml'},
-    {:id => 'bar', :href => 'bar.html', :media_type => 'application/xhtml+xml'},
-  ],
-  :spine => [
-    {:idref => 'foo'},
-    {:idref => 'bar'}
-  ],
-  :toc => 'ncx'
+  :identifier => {'ISBN' => '0-0000000-0-0'},
+  :manifest => ['foo.html', 'bar.html'],
+  :ncx => 'toc.ncx'
 ).save(File.join(dir, 'content.opf'))
 
 # Create OCF
 EeePub::OCF.new(
   :dir => dir,
-  :container => EeePub::OCF::Container.new(
-    :rootfiles => [
-      {:full_path => 'content.opf', :media_type => 'application/oebps-package+xml'}
-    ]
-  )
+  :container => 'content.opf'
 ).make(epub_name)

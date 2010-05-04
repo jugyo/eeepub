@@ -22,8 +22,7 @@ module EeePub
     default_value :language, 'en'
     default_value :ncx, 'toc.ncx'
 
-    alias_method :files, :manifest
-    alias_method :'files=', :'manifest='
+    attr_alias :files, :manifest
 
     def initialize(values)
       super

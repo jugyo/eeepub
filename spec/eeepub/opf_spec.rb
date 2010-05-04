@@ -4,14 +4,17 @@ require 'date'
 describe "EeePub::OPF" do
   before do
     @opf = EeePub::OPF.new(
-      :unique_identifier => 'BookId',
-      :title => 'title',
-      :language => 'ja',
       :identifier => {:scheme => 'ISBN', :value => '978-4-00-310101-8'},
-      :files => ['foo.html', 'bar.html', 'picture.png'],
-      :spine => ['foo.html', 'bar.html'],
-      :ncx => 'toc.ncx'
+      :files => ['foo.html', 'bar.html', 'picture.png']
     )
+  end
+
+  it 'should set default value' do
+    @opf.toc.should == 'ncx'
+    @opf.unique_identifier.should == 'BookId'
+    @opf.title.should == 'Untitled'
+    @opf.language.should == 'en'
+    @opf.ncx.should == 'toc.ncx'
   end
 
   it 'should export as xml' do
@@ -132,6 +135,24 @@ describe "EeePub::OPF" do
       elements.size.should == 2
       elements.each_with_index do |element, index|
         element.inner_text.should == @opf.language[index]
+      end
+    end
+  end
+
+  context 'specify spine' do
+    before do
+      @opf.spine = ['a', 'b']
+    end
+
+    it 'should export as xml' do
+      doc  = Nokogiri::XML(@opf.to_xml)
+      spine = doc.at('spine')
+      spine.should_not be_nil
+      spine = spine.search('itemref')
+      spine.size.should == 2
+      spine.each_with_index do |itemref, index|
+        expect = @opf.spine[index]
+        itemref.attribute('idref').value.should == expect
       end
     end
   end

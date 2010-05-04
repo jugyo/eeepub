@@ -16,6 +16,12 @@ module EeePub
                   :ncx,
                   :toc
 
+    default_value :toc, 'ncx'
+    default_value :unique_identifier, 'BookId'
+    default_value :title, 'Untitled'
+    default_value :language, 'en'
+    default_value :ncx, 'toc.ncx'
+
     alias_method :files, :manifest
     alias_method :'files=', :'manifest='
 
@@ -23,11 +29,23 @@ module EeePub
       super
     end
 
-    def toc
-      @toc ||= 'ncx'
+    def spine
+      unless @spine
+        items = manifest.map do |i|
+          case i
+          when String
+            id = i
+            media_type = guess_media_type(i)
+          when Hash
+            id = i[:id]
+            media_type = i[:media_type] || guess_media_type(i[:href])
+          end
+          media_type == 'application/xhtml+xml' ? id : nil
+        end
+        @spine = items.compact
+      end
+      @spine
     end
-
-    
 
     def build_xml(builder)
       builder.package :xmlns => "http://www.idpf.org/2007/opf",

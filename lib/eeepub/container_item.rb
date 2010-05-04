@@ -5,6 +5,14 @@ module EeePub
   class ContainerItem
     include ERB::Util
 
+    def self.default_value(name, default)
+      instance_variable_name = "@#{name}"
+      define_method(name) do
+        self.instance_variable_get(instance_variable_name) ||
+          self.instance_variable_set(instance_variable_name, default)
+      end
+    end
+
     def initialize(values)
       set_values(values)
     end

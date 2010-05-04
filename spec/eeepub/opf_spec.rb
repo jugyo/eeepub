@@ -4,7 +4,7 @@ require 'date'
 describe "EeePub::OPF" do
   before do
     @opf = EeePub::OPF.new(
-      :identifier => {:scheme => 'ISBN', :value => '978-4-00-310101-8'},
+      :identifier => {'ISBN' => '978-4-00-310101-8'},
       :files => ['foo.html', 'bar.html', 'picture.png'],
       :ncx => 'toc.ncx'
     )
@@ -15,6 +15,36 @@ describe "EeePub::OPF" do
     @opf.unique_identifier.should == 'BookId'
     @opf.title.should == 'Untitled'
     @opf.language.should == 'en'
+  end
+
+  describe 'spec of identifier' do
+    context 'specify as Array' do
+      before { @opf.identifier = [{:scheme => 'ISBN', :value => '978-4-00-310101-8'}] }
+      it 'should return value' do
+        @opf.identifier.should == [{:scheme => 'ISBN', :value => '978-4-00-310101-8'}]
+      end
+    end
+
+    context 'specify as Hash' do
+      before { @opf.identifier = {:scheme => 'ISBN', :value => '978-4-00-310101-8'} }
+      it 'should return value' do
+        @opf.identifier.should == [{:scheme => 'ISBN', :value => '978-4-00-310101-8', :id => @opf.unique_identifier}]
+      end
+    end
+
+    context 'specify as Hash(scheme => value)' do
+      before { @opf.identifier = {'ISBN' => '978-4-00-310101-8'} }
+      it 'should return value' do
+        @opf.identifier.should == [{:scheme => 'ISBN', :value => '978-4-00-310101-8', :id => @opf.unique_identifier}]
+      end
+    end
+
+    context 'specify as String' do
+      before { @opf.identifier = '978-4-00-310101-8' }
+      it 'should return value' do
+        @opf.identifier.should == [{:value => '978-4-00-310101-8', :id => @opf.unique_identifier}]
+      end
+    end
   end
 
   it 'should export as xml' do
@@ -38,8 +68,8 @@ describe "EeePub::OPF" do
     end
     identifier = metadata.xpath('dc:identifier', 'xmlns:dc' => "http://purl.org/dc/elements/1.1/")[0]
     identifier.attribute('id').value.should == @opf.unique_identifier
-    identifier.attribute('scheme').value.should == @opf.identifier[:scheme]
-    identifier.inner_text.should == @opf.identifier[:value]
+    identifier.attribute('scheme').value.should == @opf.identifier[0][:scheme]
+    identifier.inner_text.should == @opf.identifier[0][:value]
 
     manifest = doc.at('manifest')
     manifest.should_not be_nil
@@ -98,8 +128,8 @@ describe "EeePub::OPF" do
       end
       identifier = metadata.xpath('dc:identifier', 'xmlns:dc' => "http://purl.org/dc/elements/1.1/")[0]
       identifier.attribute('id').value.should == @opf.unique_identifier
-      identifier.attribute('scheme').value.should == @opf.identifier[:scheme]
-      identifier.inner_text.should == @opf.identifier[:value]
+      identifier.attribute('scheme').value.should == @opf.identifier[0][:scheme]
+      identifier.inner_text.should == @opf.identifier[0][:value]
     end
   end
 

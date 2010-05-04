@@ -23,6 +23,25 @@ module EeePub
 
     attr_alias :files, :manifest
 
+    def identifier
+      case @identifier
+      when Array
+        @identifier
+      when String
+        [{:value => @identifier, :id => unique_identifier}]
+      when Hash
+        if @identifier.size == 1
+          key = @identifier.keys[0]
+          [{:scheme => key, :value => @identifier[key], :id => unique_identifier}]
+        else
+          @identifier[:id] = unique_identifier
+          [@identifier]
+        end
+      else
+        @identifier
+      end
+    end
+
     def spine
       unless @spine
         items = manifest.map do |i|
@@ -58,13 +77,11 @@ module EeePub
         'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance",
         'xmlns:opf' => "http://www.idpf.org/2007/opf" do
 
-        case identifier
-        when Array
-          identifier.each do |i|
-            builder.dc :identifier, i[:value], :id => i[:id], 'opf:scheme' => i[:scheme]
-          end
-        else
-          builder.dc :identifier, identifier[:value], :id => unique_identifier, 'opf:scheme' => identifier[:scheme]
+        identifier.each do |i|
+          attrs = {}
+          attrs['opf:scheme'] = i[:scheme] if i[:scheme]
+          attrs[:id] = i[:id] if i[:id]
+          builder.dc :identifier, i[:value], attrs
         end
 
         [:title, :language, :subject, :description, :relation, :creator, :publisher, :date, :rights].each do |i|

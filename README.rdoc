@@ -8,7 +8,7 @@ EeePub is a Ruby ePub generator.
 
 == Usage
 
-Show examples: http://github.com/jugyo/EeePub/tree/master/examples/
+See examples: http://github.com/jugyo/EeePub/tree/master/examples/
 
 == Copyright
 

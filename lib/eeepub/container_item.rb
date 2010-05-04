@@ -37,6 +37,27 @@ module EeePub
       end
     end
 
+    def guess_media_type(filename)
+      case filename
+      when /.*\.html?$/i
+        'application/xhtml+xml'
+      when /.*\.css$/i
+        'text/css'
+      when /.*\.(jpeg|jpg)$/
+        'image/jpeg'
+      when /.*\.png$/i
+        'image/png'
+      when /.*\.gif$/i
+        'image/gif'
+      when /.*\.svg$/i
+        'image/svg+xml'
+      when /.*\.ncx$/i
+        'application/x-dtbncx+xml'
+      when /.*\.opf$/i
+        'application/oebps-package+xml'
+      end
+    end
+
     def create_build_option(hash)
       result = {}
       hash.each do |k, v|

@@ -8,11 +8,7 @@ describe "EeePub::OPF" do
       :title => 'title',
       :language => 'ja',
       :identifier => {:id => 'BookId', :scheme => 'ISBN', :value => '978-4-00-310101-8'},
-      :manifest => [
-        {:id => 'foo', :href => 'foo.html', :media_type => 'application/xhtml+xml'},
-        {:id => 'bar', :href => 'bar.html', :media_type => 'application/xhtml+xml'},
-        {:id => 'picture', :href => 'picture.png', :media_type => 'image/png'}
-      ],
+      :manifest => ['foo.html', 'bar.html', 'picture.png'],
       :spine => ['foo', 'bar'],
       :toc => 'ncx'
     )
@@ -48,9 +44,9 @@ describe "EeePub::OPF" do
     manifest.size.should == 3
     manifest.each_with_index do |item, index|
       expect = @opf.manifest[index]
-      item.attribute('id').value.should == expect[:id]
-      item.attribute('href').value.should == expect[:href]
-      item.attribute('media-type').value.should == expect[:media_type]
+      item.attribute('id').value.should == expect
+      item.attribute('href').value.should == expect
+      item.attribute('media-type').value.should == @opf.guess_media_type(expect)
     end
 
     spine = doc.at('spine')
@@ -133,6 +129,30 @@ describe "EeePub::OPF" do
       elements.size.should == 2
       elements.each_with_index do |element, index|
         element.inner_text.should == @opf.language[index]
+      end
+    end
+  end
+
+  context 'specify manifest as Hash' do
+    before do
+      @opf.manifest = [
+        {:id => 'foo', :href => 'foo.html', :media_type => 'application/xhtml+xml'},
+        {:id => 'bar', :href => 'bar.html', :media_type => 'application/xhtml+xml'},
+        {:id => 'picture', :href => 'picture.png', :media_type => 'image/png'}
+      ]
+    end
+
+    it 'should export as xml' do
+      doc  = Nokogiri::XML(@opf.to_xml)
+      manifest = doc.at('manifest')
+      manifest.should_not be_nil
+      manifest = manifest.search('item')
+      manifest.size.should == 3
+      manifest.each_with_index do |item, index|
+        expect = @opf.manifest[index]
+        item.attribute('id').value.should == expect[:id]
+        item.attribute('href').value.should == expect[:href]
+        item.attribute('media-type').value.should == expect[:media_type]
       end
     end
   end

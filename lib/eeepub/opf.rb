@@ -50,7 +50,14 @@ module EeePub
     def build_manifest(builder)
       builder.manifest do
         manifest.each do |i|
-          builder.item create_build_option(i)
+          case i
+          when Hash
+            builder.item create_build_option(i)
+          when String
+            builder.item :id => i, :href => i, 'media-type' => guess_media_type(i)
+          else
+            raise 'manifest item must be Hash or String'
+          end
         end
       end
     end

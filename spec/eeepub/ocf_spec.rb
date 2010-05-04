@@ -19,6 +19,11 @@ describe "EeePub::OCF" do
     @container.rootfiles.should == [{:full_path => 'foo.opf', :media_type => 'application/oebps-package+xml'}]
   end
 
+  it 'should specify container as String' do
+    ocf = EeePub::OCF.new(:dir => @tmpdir, :container => 'foo.opf')
+    ocf.container.rootfiles == [{:full_path => 'foo.opf', :media_type => 'application/oebps-package+xml'}]
+  end
+
   it 'should make xml' do
     doc  = Nokogiri::XML(@container.to_xml)
     rootfiles = doc.at('rootfiles')

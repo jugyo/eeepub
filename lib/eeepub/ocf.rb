@@ -35,6 +35,15 @@ module EeePub
       end
     end
 
+    def container=(arg)
+      case arg
+      when String
+        @container = EeePub::OCF::Container.new(arg)
+      else
+        @container = arg
+      end
+    end
+
     def make(output_path)
       output_path = File.expand_path(output_path)
 

@@ -7,14 +7,16 @@ describe "EeePub::OCF" do
   before do
     @tmpdir = File.join(Dir.tmpdir, 'eeepub_test')
     FileUtils.mkdir_p(@tmpdir)
-    @container = EeePub::OCF::Container.new(
-      :rootfiles => [{:full_path => 'foo.opf', :media_type => 'application/oebps-package+xml'}]
-    )
+    @container = EeePub::OCF::Container.new('foo.opf')
     @ocf = EeePub::OCF.new(:dir => @tmpdir, :container => @container)
   end
 
   after do
     FileUtils.rm_rf(@tmpdir)
+  end
+
+  it 'should return rootfiles' do
+    @container.rootfiles.should == [{:full_path => 'foo.opf', :media_type => 'application/oebps-package+xml'}]
   end
 
   it 'should make xml' do

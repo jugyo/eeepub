@@ -3,6 +3,19 @@ module EeePub
     class Container < ContainerItem
       attr_accessor :rootfiles
 
+      def set_values(arg)
+        case arg
+        when String
+          super(
+            :rootfiles => [
+              {:full_path => arg, :media_type => guess_media_type(arg)}
+            ]
+          )
+        else
+          super
+        end
+      end
+
       def build_xml(builder)
         builder.container :xmlns => "urn:oasis:names:tc:opendocument:xmlns:container", :version => "1.0" do
           builder.rootfiles do

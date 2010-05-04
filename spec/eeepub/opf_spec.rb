@@ -7,10 +7,10 @@ describe "EeePub::OPF" do
       :unique_identifier => 'BookId',
       :title => 'title',
       :language => 'ja',
-      :identifier => {:id => 'BookId', :scheme => 'ISBN', :value => '978-4-00-310101-8'},
-      :manifest => ['foo.html', 'bar.html', 'picture.png'],
-      :spine => ['foo', 'bar'],
-      :toc => 'ncx'
+      :identifier => {:scheme => 'ISBN', :value => '978-4-00-310101-8'},
+      :files => ['foo.html', 'bar.html', 'picture.png'],
+      :spine => ['foo.html', 'bar.html'],
+      :ncx => 'toc.ncx'
     )
   end
 
@@ -34,20 +34,23 @@ describe "EeePub::OPF" do
         'xmlns:dc' => "http://purl.org/dc/elements/1.1/").inner_text.should == expect
     end
     identifier = metadata.xpath('dc:identifier', 'xmlns:dc' => "http://purl.org/dc/elements/1.1/")[0]
-    identifier.attribute('id').value.should == @opf.identifier[:id]
+    identifier.attribute('id').value.should == @opf.unique_identifier
     identifier.attribute('scheme').value.should == @opf.identifier[:scheme]
     identifier.inner_text.should == @opf.identifier[:value]
 
     manifest = doc.at('manifest')
     manifest.should_not be_nil
     manifest = manifest.search('item')
-    manifest.size.should == 3
-    manifest.each_with_index do |item, index|
+    manifest.size.should == 4
+    manifest[0..2].each_with_index do |item, index|
       expect = @opf.manifest[index]
       item.attribute('id').value.should == expect
       item.attribute('href').value.should == expect
       item.attribute('media-type').value.should == @opf.guess_media_type(expect)
     end
+    manifest[3].attribute('id').value.should == 'ncx'
+    manifest[3].attribute('href').value.should == @opf.ncx
+    manifest[3].attribute('media-type').value.should == @opf.guess_media_type(@opf.ncx)
 
     spine = doc.at('spine')
     spine.should_not be_nil
@@ -91,7 +94,7 @@ describe "EeePub::OPF" do
           'xmlns:dc' => "http://purl.org/dc/elements/1.1/").inner_text.should == expect
       end
       identifier = metadata.xpath('dc:identifier', 'xmlns:dc' => "http://purl.org/dc/elements/1.1/")[0]
-      identifier.attribute('id').value.should == @opf.identifier[:id]
+      identifier.attribute('id').value.should == @opf.unique_identifier
       identifier.attribute('scheme').value.should == @opf.identifier[:scheme]
       identifier.inner_text.should == @opf.identifier[:value]
     end
@@ -147,13 +150,16 @@ describe "EeePub::OPF" do
       manifest = doc.at('manifest')
       manifest.should_not be_nil
       manifest = manifest.search('item')
-      manifest.size.should == 3
-      manifest.each_with_index do |item, index|
+      manifest.size.should == 4
+      manifest[0..2].each_with_index do |item, index|
         expect = @opf.manifest[index]
         item.attribute('id').value.should == expect[:id]
         item.attribute('href').value.should == expect[:href]
         item.attribute('media-type').value.should == expect[:media_type]
       end
+      manifest[3].attribute('id').value.should == 'ncx'
+      manifest[3].attribute('href').value.should == @opf.ncx
+      manifest[3].attribute('media-type').value.should == @opf.guess_media_type(@opf.ncx)
     end
   end
 end

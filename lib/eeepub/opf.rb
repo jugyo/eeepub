@@ -13,7 +13,21 @@ module EeePub
                   :rights,
                   :manifest,
                   :spine,
+                  :ncx,
                   :toc
+
+    alias_method :files, :manifest
+    alias_method :'files=', :'manifest='
+
+    def initialize(values)
+      super
+    end
+
+    def toc
+      @toc ||= 'ncx'
+    end
+
+    
 
     def build_xml(builder)
       builder.package :xmlns => "http://www.idpf.org/2007/opf",
@@ -32,8 +46,13 @@ module EeePub
         'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance",
         'xmlns:opf' => "http://www.idpf.org/2007/opf" do
 
-        [identifier].flatten.each do |i|
-          builder.dc :identifier, i[:value], :id => i[:id], 'opf:scheme' => i[:scheme]
+        case identifier
+        when Array
+          identifier.each do |i|
+            builder.dc :identifier, i[:value], :id => i[:id], 'opf:scheme' => i[:scheme]
+          end
+        else
+          builder.dc :identifier, identifier[:value], :id => unique_identifier, 'opf:scheme' => identifier[:scheme]
         end
 
         [:title, :language, :subject, :description, :relation, :creator, :publisher, :date, :rights].each do |i|
@@ -48,11 +67,12 @@ module EeePub
     end
 
     def build_manifest(builder)
+      items = manifest + [{:id => 'ncx', :href => ncx}]
       builder.manifest do
-        manifest.each do |i|
+        items.each do |i|
           case i
           when Hash
-            builder.item create_build_option(i)
+            builder.item :id => i[:id], :href => i[:href], 'media-type' => i[:media_type] || guess_media_type(i[:href])
           when String
             builder.item :id => i, :href => i, 'media-type' => guess_media_type(i)
           else

@@ -1,8 +1,17 @@
 module EeePub
   class OCF
     class Container < ContainerItem
-      template 'container.xml.erb'
       attr_accessor :rootfiles
+
+      def build_xml(builder)
+        builder.container :xmlns => "urn:oasis:names:tc:opendocument:xmlns:container", :version => "1.0" do
+          builder.rootfiles do
+            rootfiles.each do |i|
+              builder.rootfile create_build_option(i)
+            end
+          end
+        end
+      end
     end
 
     attr_accessor :dir, :container

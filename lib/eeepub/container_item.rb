@@ -1,18 +1,9 @@
-require 'erb'
+require 'erb' # TODO 消す
+require 'builder'
 
 module EeePub
   class ContainerItem
     include ERB::Util
-
-    TEMPLATE_DIR = File.expand_path(File.join(File.dirname(__FILE__), 'templates'))
-
-    class << self
-      attr_reader :template_name
-
-      def template(name)
-        @template_name = name
-      end
-    end
 
     def initialize(values)
       set_values(values)
@@ -25,7 +16,11 @@ module EeePub
     end
 
     def to_xml
-      erb(self.class.template_name).result(binding)
+      out = ""
+      builder = Builder::XmlMarkup.new(:target => out, :indent => 2)
+      builder.instruct!
+      build_xml(builder)
+      out
     end
 
     def erb(filename)
@@ -40,6 +35,15 @@ module EeePub
       File.open(filepath, 'w') do |file|
         file << self.to_xml
       end
+    end
+
+    def create_build_option(hash)
+      result = {}
+      hash.each do |k, v|
+        key = k.to_s.gsub('_', '-').to_sym
+        result[key] = v
+      end
+      result
     end
   end
 end

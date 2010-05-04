@@ -7,12 +7,10 @@ module EeePub
                   :doc_title,
                   :nav_map
 
-    def set_values(values)
-      super
-      @depth            ||= 1
-      @total_page_count ||= 0
-      @max_page_number  ||= 0
-    end
+    default_value :depth, 1
+    default_value :total_page_count, 0
+    default_value :max_page_number, 0
+    default_value :doc_title, 'Untitled'
 
     def build_xml(builder)
       builder.declare! :DOCTYPE, :ncx, :PUBLIC, "-//NISO//DTD ncx 2005-1//EN", "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd"

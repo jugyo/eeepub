@@ -6,7 +6,7 @@ require 'fileutils'
 describe "EeePub::NCX" do
   before do
     @ncx = EeePub::NCX.new(
-      :uid => 'uid', :doc_title => 'title',
+      :uid => 'uid',
       :nav_map => [
         {:id => 'nav-1', :play_order => '1', :label => 'foo', :content => 'foo.html'},
         {:id => 'nav-2', :play_order => '2', :label => 'bar', :content => 'bar.html'}
@@ -18,6 +18,7 @@ describe "EeePub::NCX" do
     @ncx.depth.should == 1
     @ncx.total_page_count.should == 0
     @ncx.max_page_number.should == 0
+    @ncx.doc_title.should == 'Untitled'
   end
 
   it 'should make xml' do
@@ -25,11 +26,11 @@ describe "EeePub::NCX" do
     head = doc.at('head')
     head.should_not be_nil
 
-    head.at("//xmlns:meta[@name='dtb:uid']")['content'].should == 'uid'
-    head.at("//xmlns:meta[@name='dtb:depth']")['content'].should == '1'
-    head.at("//xmlns:meta[@name='dtb:totalPageCount']")['content'].should == '0'
-    head.at("//xmlns:meta[@name='dtb:maxPageNumber']")['content'].should == '0'
-    head.at("//xmlns:docTitle/xmlns:text").inner_text.should == 'title'
+    head.at("//xmlns:meta[@name='dtb:uid']")['content'].should == @ncx.uid
+    head.at("//xmlns:meta[@name='dtb:depth']")['content'].should == @ncx.depth.to_s
+    head.at("//xmlns:meta[@name='dtb:totalPageCount']")['content'].should == @ncx.total_page_count.to_s
+    head.at("//xmlns:meta[@name='dtb:maxPageNumber']")['content'].should == @ncx.max_page_number.to_s
+    head.at("//xmlns:docTitle/xmlns:text").inner_text.should == @ncx.doc_title
 
     nav_map = doc.at('navMap')
     nav_map.should_not be_nil

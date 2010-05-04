@@ -24,10 +24,6 @@ module EeePub
 
     attr_alias :files, :manifest
 
-    def initialize(values)
-      super
-    end
-
     def spine
       unless @spine
         items = manifest.map do |i|

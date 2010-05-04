@@ -5,7 +5,8 @@ describe "EeePub::OPF" do
   before do
     @opf = EeePub::OPF.new(
       :identifier => {:scheme => 'ISBN', :value => '978-4-00-310101-8'},
-      :files => ['foo.html', 'bar.html', 'picture.png']
+      :files => ['foo.html', 'bar.html', 'picture.png'],
+      :ncx => 'toc.ncx'
     )
   end
 
@@ -14,7 +15,6 @@ describe "EeePub::OPF" do
     @opf.unique_identifier.should == 'BookId'
     @opf.title.should == 'Untitled'
     @opf.language.should == 'en'
-    @opf.ncx.should == 'toc.ncx'
   end
 
   it 'should export as xml' do

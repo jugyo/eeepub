@@ -20,7 +20,6 @@ module EeePub
     default_value :unique_identifier, 'BookId'
     default_value :title, 'Untitled'
     default_value :language, 'en'
-    default_value :ncx, 'toc.ncx'
 
     attr_alias :files, :manifest
 

@@ -96,7 +96,8 @@ module EeePub
     end
 
     def build_manifest(builder)
-      items = manifest + [{:id => 'ncx', :href => ncx}]
+      items = manifest
+      items += [{:id => 'ncx', :href => ncx}] if ncx
       builder.manifest do
         items.each do |i|
           case i

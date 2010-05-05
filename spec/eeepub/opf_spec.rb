@@ -17,36 +17,6 @@ describe "EeePub::OPF" do
     @opf.language.should == 'en'
   end
 
-  describe 'spec of identifier' do
-    context 'specify as Array' do
-      before { @opf.identifier = [{:scheme => 'ISBN', :value => '978-4-00-310101-8'}] }
-      it 'should return value' do
-        @opf.identifier.should == [{:scheme => 'ISBN', :value => '978-4-00-310101-8'}]
-      end
-    end
-
-    context 'specify as Hash' do
-      before { @opf.identifier = {:scheme => 'ISBN', :value => '978-4-00-310101-8'} }
-      it 'should return value' do
-        @opf.identifier.should == [{:scheme => 'ISBN', :value => '978-4-00-310101-8', :id => @opf.unique_identifier}]
-      end
-    end
-
-    context 'specify as Hash(scheme => value)' do
-      before { @opf.identifier = {'ISBN' => '978-4-00-310101-8'} }
-      it 'should return value' do
-        @opf.identifier.should == [{:scheme => 'ISBN', :value => '978-4-00-310101-8', :id => @opf.unique_identifier}]
-      end
-    end
-
-    context 'specify as String' do
-      before { @opf.identifier = '978-4-00-310101-8' }
-      it 'should return value' do
-        @opf.identifier.should == [{:value => '978-4-00-310101-8', :id => @opf.unique_identifier}]
-      end
-    end
-  end
-
   it 'should export as xml' do
     doc  = Nokogiri::XML(@opf.to_xml)
     doc.at('package').attribute('unique-identifier').value.should == @opf.unique_identifier
@@ -92,6 +62,47 @@ describe "EeePub::OPF" do
     spine.each_with_index do |itemref, index|
       expect = @opf.spine[index]
       itemref.attribute('idref').value.should == expect
+    end
+  end
+
+  describe 'spec of identifier' do
+    context 'specify as Array' do
+      before { @opf.identifier = [{:scheme => 'ISBN', :value => '978-4-00-310101-8'}] }
+      it 'should return value' do
+        @opf.identifier.should == [{:scheme => 'ISBN', :value => '978-4-00-310101-8'}]
+      end
+    end
+
+    context 'specify as Hash' do
+      before { @opf.identifier = {:scheme => 'ISBN', :value => '978-4-00-310101-8'} }
+      it 'should return value' do
+        @opf.identifier.should == [{:scheme => 'ISBN', :value => '978-4-00-310101-8', :id => @opf.unique_identifier}]
+      end
+    end
+
+    context 'specify as Hash(scheme => value)' do
+      before { @opf.identifier = {'ISBN' => '978-4-00-310101-8'} }
+      it 'should return value' do
+        @opf.identifier.should == [{:scheme => 'ISBN', :value => '978-4-00-310101-8', :id => @opf.unique_identifier}]
+      end
+    end
+
+    context 'specify as String' do
+      before { @opf.identifier = '978-4-00-310101-8' }
+      it 'should return value' do
+        @opf.identifier.should == [{:value => '978-4-00-310101-8', :id => @opf.unique_identifier}]
+      end
+    end
+  end
+
+  context 'ncx is nil' do
+    before do
+      @opf.ncx = nil
+    end
+
+    it 'should not set ncx to manifest' do
+      doc  = Nokogiri::XML(@opf.to_xml)
+      doc.search('manifest/item[id=ncx]').should be_empty
     end
   end
 

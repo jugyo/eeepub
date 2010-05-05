@@ -7,6 +7,9 @@ module EeePub
                   :doc_title,
                   :nav_map
 
+    attr_alias :title, :doc_title
+    attr_alias :nav, :nav_map
+
     default_value :depth, 1
     default_value :total_page_count, 0
     default_value :max_page_number, 0
@@ -36,10 +39,13 @@ module EeePub
 
     def build_nav_map(builder)
       builder.navMap do
-        nav_map.each do |i|
-          builder.navPoint :id => i[:id], :playOrder => i[:play_order] do
-            builder.navLabel { builder.text i[:label] }
-            builder.content :src => i[:content]
+        nav_map.each_with_index do |nav_point, index|
+          play_order = index + 1
+          id = nav_point[:id] || "navPoint-#{play_order}"
+
+          builder.navPoint :id => id, :playOrder => play_order do
+            builder.navLabel { builder.text nav_point[:label] }
+            builder.content :src => nav_point[:content]
           end
         end
       end

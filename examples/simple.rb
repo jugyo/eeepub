@@ -30,10 +30,11 @@ end
 
 # Create NCX
 EeePub::NCX.new(
-  :uid => 'xxxx', :doc_title => 'simple',
-  :nav_map => [
-    {:id => 'nav-1', :play_order => '1', :label => '1. foo', :content => 'foo.html'},
-    {:id => 'nav-2', :play_order => '2', :label => '2. bar', :content => 'bar.html'}
+  :uid => 'xxxx',
+  :title => 'simple',
+  :nav => [
+    {:label => '1. foo', :content => 'foo.html'},
+    {:label => '2. bar', :content => 'bar.html'}
   ]
 ).save(File.join(dir, 'toc.ncx'))
 

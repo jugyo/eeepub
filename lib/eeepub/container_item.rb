@@ -1,10 +1,7 @@
-require 'erb' # TODO 消す
 require 'builder'
 
 module EeePub
   class ContainerItem
-    include ERB::Util
-
     class << self
       def default_value(name, default)
         instance_variable_name = "@#{name}"
@@ -36,14 +33,6 @@ module EeePub
       builder.instruct!
       build_xml(builder)
       out
-    end
-
-    def erb(filename)
-      ERB.new(
-        File.read(File.join(TEMPLATE_DIR, filename)),
-        nil,
-        '-'
-      )
     end
 
     def save(filepath)

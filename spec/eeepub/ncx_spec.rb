@@ -42,4 +42,39 @@ describe "EeePub::NCX" do
       nav_point.at('content').attribute('src').value.should == expect[:content]
     end
   end
+
+  context 'nested nav_map' do
+    before do
+      @ncx.nav = [
+        {:label => 'foo', :content => 'foo.html',
+          :nav => [
+            {:label => 'foo-1', :content => 'foo-1.html'},
+            {:label => 'foo-2', :content => 'foo-2.html'}
+          ],
+        },
+        {:label => 'bar', :content => 'bar.html'}
+      ]
+    end
+
+    it 'should make xml' do
+      doc  = Nokogiri::XML(@ncx.to_xml)
+      nav_map = doc.at('navMap')
+
+      nav_map.search('navMap/navPoint').each_with_index do |nav_point, index|
+        expect = @ncx.nav_map[index]
+        nav_point.attribute('id').value.should == "navPoint-#{index + 1}"
+        nav_point.attribute('playOrder').value.should == (index + 1).to_s
+        nav_point.at('navLabel').at('text').inner_text.should == expect[:label]
+        nav_point.at('content').attribute('src').value.should == expect[:content]
+      end
+
+      nav_map.search('navPoint/navPoint').each_with_index do |nav_point, index|
+        expect = @ncx.nav[0][:nav][index]
+        nav_point.attribute('id').value.should == "navPoint-#{index + 2}"
+        nav_point.attribute('playOrder').value.should == (index + 2).to_s
+        nav_point.at('navLabel').at('text').inner_text.should == expect[:label]
+        nav_point.at('content').attribute('src').value.should == expect[:content]
+      end
+    end
+  end
 end

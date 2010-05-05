@@ -39,16 +39,29 @@ module EeePub
 
     def build_nav_map(builder)
       builder.navMap do
-        nav_map.each_with_index do |nav_point, index|
-          play_order = index + 1
-          id = nav_point[:id] || "navPoint-#{play_order}"
+        builder_nav_point(builder, nav_map)
+      end
+    end
 
-          builder.navPoint :id => id, :playOrder => play_order do
-            builder.navLabel { builder.text nav_point[:label] }
-            builder.content :src => nav_point[:content]
+    def builder_nav_point(builder, nav_point, play_order = 1)
+      case nav_point
+      when Array
+        nav_point.each do |point|
+          play_order = builder_nav_point(builder, point, play_order)
+        end
+      when Hash
+        builder.navPoint :id => "navPoint-#{play_order}", :playOrder => play_order do
+          builder.navLabel { builder.text nav_point[:label] }
+          builder.content :src => nav_point[:content]
+          play_order += 1
+          if nav_point[:nav]
+            play_order = builder_nav_point(builder, nav_point[:nav], play_order)
           end
         end
+      else
+        raise "nav_point must be Array or Hash"
       end
+      play_order
     end
   end
 end

@@ -43,21 +43,10 @@ module EeePub
     end
 
     def spine
-      unless @spine
-        items = manifest.map do |i|
-          case i
-          when String
-            id = i
-            media_type = guess_media_type(i)
-          when Hash
-            id = i[:id]
-            media_type = i[:media_type] || guess_media_type(i[:href])
-          end
-          media_type == 'application/xhtml+xml' ? id : nil
-        end
-        @spine = items.compact
-      end
-      @spine
+      @spine ||
+        complete_manifest.
+          select { |i| i[:media_type] == 'application/xhtml+xml' }.
+          map { |i| i[:id]}
     end
 
     def build_xml(builder)
@@ -96,18 +85,9 @@ module EeePub
     end
 
     def build_manifest(builder)
-      items = manifest
-      items += [{:id => 'ncx', :href => ncx}] if ncx
       builder.manifest do
-        items.each do |i|
-          case i
-          when Hash
-            builder.item :id => i[:id], :href => i[:href], 'media-type' => i[:media_type] || guess_media_type(i[:href])
-          when String
-            builder.item :id => i, :href => i, 'media-type' => guess_media_type(i)
-          else
-            raise 'manifest item must be Hash or String'
-          end
+        complete_manifest.each do |i|
+          builder.item :id => i[:id], :href => i[:href], 'media-type' => i[:media_type]
         end
       end
     end
@@ -118,6 +98,39 @@ module EeePub
           builder.itemref :idref => i
         end
       end
+    end
+
+    def complete_manifest
+      item_id_cache = {}
+
+      result = manifest.map do |i|
+        case i
+        when String
+          id = create_unique_item_id(i, item_id_cache)
+          href = i
+          media_type = guess_media_type(i)
+        when Hash
+          id = i[:id] || create_unique_item_id(i[:href], item_id_cache)
+          href = i[:href]
+          media_type = i[:media_type] || guess_media_type(i[:href])
+        end
+        {:id => id, :href => href, :media_type => media_type}
+      end
+
+      result += [{:id => 'ncx', :href => ncx, :media_type => 'application/x-dtbncx+xml'}] if ncx
+      result
+    end
+
+    def create_unique_item_id(filename, id_cache)
+      basename = File.basename(filename)
+      unless id_cache[basename]
+        id_cache[basename] = 0
+        name = basename
+      else
+        name = "#{basename}-#{id_cache[basename]}"
+      end
+      id_cache[basename] += 1
+      name
     end
   end
 end

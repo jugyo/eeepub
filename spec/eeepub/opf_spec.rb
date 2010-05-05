@@ -59,10 +59,8 @@ describe "EeePub::OPF" do
     spine.should_not be_nil
     spine = spine.search('itemref')
     spine.size.should == 2
-    spine.each_with_index do |itemref, index|
-      expect = @opf.spine[index]
-      itemref.attribute('idref').value.should == expect
-    end
+    spine[0].attribute('idref').value.should == 'foo.html'
+    spine[1].attribute('idref').value.should == 'bar.html'
   end
 
   describe 'spec of identifier' do
@@ -92,6 +90,16 @@ describe "EeePub::OPF" do
       it 'should return value' do
         @opf.identifier.should == [{:value => '978-4-00-310101-8', :id => @opf.unique_identifier}]
       end
+    end
+  end
+
+  describe 'spec of create_unique_item_id' do
+    it 'should return unique item id' do
+      id_cache = {}
+      @opf.create_unique_item_id('foo/bar/test.html', id_cache).should == 'test.html'
+      @opf.create_unique_item_id('foo/bar/test.html', id_cache).should == 'test.html-1'
+      @opf.create_unique_item_id('foo/bar/TEST.html', id_cache).should == 'TEST.html'
+      @opf.create_unique_item_id('foo/bar/test.html.1', id_cache).should == 'test.html.1'
     end
   end
 
@@ -191,10 +199,8 @@ describe "EeePub::OPF" do
       spine.should_not be_nil
       spine = spine.search('itemref')
       spine.size.should == 2
-      spine.each_with_index do |itemref, index|
-        expect = @opf.spine[index]
-        itemref.attribute('idref').value.should == expect
-      end
+      spine[0].attribute('idref').value.should == 'a'
+      spine[1].attribute('idref').value.should == 'b'
     end
   end
 

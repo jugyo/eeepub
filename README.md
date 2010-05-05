@@ -10,6 +10,9 @@ Usage
 
     epub = EeePub::Basic.new(
       :title => 'simple',
+      :creator => 'jugyo',
+      :publisher => 'jugyo.org',
+      :date => "2010-05-06",
       :id => {'URL' => 'http://example.com/book/foo'},
       :uid => 'http://example.com/book/foo'
     )

@@ -5,7 +5,10 @@ require 'eeepub'
 dir = File.join(File.dirname(__FILE__), 'files')
 
 epub = EeePub::Basic.new(
-  :title => 'simple',
+  :title => 'sample',
+  :creator => 'jugyo',
+  :publisher => 'jugyo.org',
+  :date => "2010-05-06",
   :id => {'URL' => 'http://example.com/book/foo'},
   :uid => 'http://example.com/book/foo'
 )

@@ -36,8 +36,8 @@ describe "EeePub::OCF" do
   end
 
   it 'should make epub' do
-    output_path = File.join(Dir.tmpdir, 'eeepub_test.epub')
-    @ocf.make(output_path)
+    output_path = File.join('eeepub_test.epub')
+    @ocf.save(output_path)
     File.exists?(output_path)
   end
 end

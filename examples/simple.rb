@@ -50,4 +50,4 @@ EeePub::OPF.new(
 EeePub::OCF.new(
   :dir => dir,
   :container => 'content.opf'
-).make(epub_name)
+).save(epub_name)

@@ -44,7 +44,7 @@ module EeePub
       end
     end
 
-    def make(output_path)
+    def save(output_path)
       output_path = File.expand_path(output_path)
 
       FileUtils.chdir(dir) do

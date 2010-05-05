@@ -50,7 +50,8 @@ module EeePub
           play_order = builder_nav_point(builder, point, play_order)
         end
       when Hash
-        builder.navPoint :id => "navPoint-#{play_order}", :playOrder => play_order do
+        id = nav_point[:id] || "navPoint-#{play_order}"
+        builder.navPoint :id => id, :playOrder => play_order do
           builder.navLabel { builder.text nav_point[:label] }
           builder.content :src => nav_point[:content]
           play_order += 1

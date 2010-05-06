@@ -3,6 +3,11 @@ EeePub
 
 EeePub is a Ruby ePub generator.
 
+Note
+-------
+
+I am thinking more better API now...
+
 Usage
 -------
 

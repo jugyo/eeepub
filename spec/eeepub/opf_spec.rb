@@ -61,6 +61,8 @@ describe "EeePub::OPF" do
     spine.size.should == 2
     spine[0].attribute('idref').value.should == 'foo.html'
     spine[1].attribute('idref').value.should == 'bar.html'
+
+    doc.at('guide').should be_nil
   end
 
   describe 'spec of identifier' do
@@ -242,6 +244,26 @@ describe "EeePub::OPF" do
       date = metadata.xpath('dc:date', 'xmlns:dc' => "http://purl.org/dc/elements/1.1/")
       date.inner_text.should == @opf.date[:value].to_s
       date.attribute('event').value.should == @opf.date[:event]
+    end
+  end
+
+  context 'set guide' do
+    before do
+      @opf.guide = [
+        {:type => 'toc', :title => 'Table of Contents', :href => 'toc.html'},
+        {:type => 'loi', :title => 'List Of Illustrations', :href => 'toc.html#figures'},
+      ]
+    end
+
+    it 'should export as xml' do
+      doc  = Nokogiri::XML(@opf.to_xml)
+      guide = doc.at('guide')
+      guide.should_not be_nil
+      references = guide.search('reference')
+      references.size.should == 2
+      [references, @opf.guide].transpose do |element, expect|
+        element.attributes.should == expect
+      end
     end
   end
 end

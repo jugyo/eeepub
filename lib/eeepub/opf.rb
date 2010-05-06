@@ -13,6 +13,7 @@ module EeePub
                   :rights,
                   :manifest,
                   :spine,
+                  :guide,
                   :ncx,
                   :toc
 
@@ -57,6 +58,7 @@ module EeePub
         build_metadata(builder)
         build_manifest(builder)
         build_spine(builder)
+        build_guide(builder)
       end
     end
 
@@ -101,6 +103,16 @@ module EeePub
       builder.spine :toc => toc do
         spine.each do |i|
           builder.itemref :idref => i
+        end
+      end
+    end
+
+    def build_guide(builder)
+      return if guide.nil? || guide.empty?
+
+      builder.guide do
+        guide.each do |i|
+          builder.reference create_build_option(i)
         end
       end
     end

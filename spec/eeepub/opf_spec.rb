@@ -230,4 +230,18 @@ describe "EeePub::OPF" do
       manifest[3].attribute('media-type').value.should == @opf.guess_media_type(@opf.ncx)
     end
   end
+
+  context 'specify dc:date[event]' do
+    before do
+      @opf.date = {:value => Date.today, :event => 'publication'}
+    end
+
+    it 'should export as xml' do
+      doc  = Nokogiri::XML(@opf.to_xml)
+      metadata = doc.at('metadata')
+      date = metadata.xpath('dc:date', 'xmlns:dc' => "http://purl.org/dc/elements/1.1/")
+      date.inner_text.should == @opf.date[:value].to_s
+      date.attribute('event').value.should == @opf.date[:event]
+    end
+  end
 end

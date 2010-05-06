@@ -75,8 +75,13 @@ module EeePub
 
         [:title, :language, :subject, :description, :relation, :creator, :publisher, :date, :rights].each do |i|
           value = self.send(i)
-          if value
-            [value].flatten.each do |v|
+          next unless value
+
+          [value].flatten.each do |v|
+            case v
+            when Hash
+              builder.dc i, v[:value], create_build_option(v.reject {|k, v| k == :value})
+            else
               builder.dc i, v
             end
           end

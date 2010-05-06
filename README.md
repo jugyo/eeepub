@@ -61,6 +61,13 @@ Install
 
     gem install eeepub
 
+Requirements
+-------
+
+* ruby 1.8.7
+* builder
+* eBook Reader :)
+
 Copyright
 -------
 

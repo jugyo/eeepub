@@ -49,11 +49,11 @@ describe "EeePub::OPF" do
       expect = @opf.manifest[index]
       item.attribute('id').value.should == expect
       item.attribute('href').value.should == expect
-      item.attribute('media-type').value.should == @opf.guess_media_type(expect)
+      item.attribute('media-type').value.should == @opf.send(:guess_media_type, expect)
     end
     manifest[3].attribute('id').value.should == 'ncx'
     manifest[3].attribute('href').value.should == @opf.ncx
-    manifest[3].attribute('media-type').value.should == @opf.guess_media_type(@opf.ncx)
+    manifest[3].attribute('media-type').value.should == @opf.send(:guess_media_type, @opf.ncx)
 
     spine = doc.at('spine')
     spine.should_not be_nil
@@ -222,7 +222,7 @@ describe "EeePub::OPF" do
       end
       manifest[3].attribute('id').value.should == 'ncx'
       manifest[3].attribute('href').value.should == @opf.ncx
-      manifest[3].attribute('media-type').value.should == @opf.guess_media_type(@opf.ncx)
+      manifest[3].attribute('media-type').value.should == @opf.send(:guess_media_type, @opf.ncx)
     end
   end
 

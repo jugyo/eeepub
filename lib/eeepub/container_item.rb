@@ -7,6 +7,8 @@ module EeePub
   class ContainerItem
     class << self
 
+      private
+
       # Set default value to attribute
       #
       # @param [Symbol] name the attribute name
@@ -64,6 +66,8 @@ module EeePub
         file << self.to_xml
       end
     end
+
+    private
 
     # Guess media type from file name
     #

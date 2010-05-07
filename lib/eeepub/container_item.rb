@@ -1,8 +1,16 @@
 require 'builder'
 
 module EeePub
+  # Abstract base class for container item of ePub. Provides some helper methods.
+  #
+  # @abstract
   class ContainerItem
     class << self
+
+      # Set default value to attribute
+      #
+      # @param [Symbol] name the attribute name
+      # @param [Object] default the default value
       def default_value(name, default)
         instance_variable_name = "@#{name}"
         define_method(name) do
@@ -11,22 +19,35 @@ module EeePub
         end
       end
 
+      # Define alias of attribute accessor
+      #
+      # @param [Symbol] name the attribute name as alias
+      # @param [Symbol] name the attribute name as source
       def attr_alias(name, src)
         alias_method name, src
         alias_method :"#{name}=", :"#{src}="
       end
     end
 
+    # Initialize with initial values for attributes
+    #
+    # @param [Hash<Symbol, Object>] values the hash of symbols and objects for attributes
     def initialize(values)
       set_values(values)
     end
 
+    # Set values for attributes
+    #
+    # @param [Hash<Symbol, Object>] values the hash of symbols and objects for attributes
     def set_values(values)
       values.each do |k, v|
         self.send(:"#{k}=", v)
       end
     end
 
+    # Convert to xml of container item
+    #
+    # @return [String] the xml of container item
     def to_xml
       out = ""
       builder = Builder::XmlMarkup.new(:target => out, :indent => 2)
@@ -35,12 +56,19 @@ module EeePub
       out
     end
 
+    # Save as container item
+    #
+    # @param [String] filepath the file path for container item
     def save(filepath)
       File.open(filepath, 'w') do |file|
         file << self.to_xml
       end
     end
 
+    # Guess media type from file name
+    #
+    # @param [String] filename the file name
+    # @return [String] the media-type
     def guess_media_type(filename)
       case filename
       when /.*\.html?$/i
@@ -62,6 +90,10 @@ module EeePub
       end
     end
 
+    # Convert options for xml attributes
+    #
+    # @param [Hash<Symbol, Object>] hash the hash of symbols and objects for xml attributes
+    # @return [Hash<String, Object>] the options for xml attributes
     def create_build_option(hash)
       result = {}
       hash.each do |k, v|

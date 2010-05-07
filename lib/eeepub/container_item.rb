@@ -31,8 +31,6 @@ module EeePub
       end
     end
 
-    # Initialize with initial values for attributes
-    #
     # @param [Hash<Symbol, Object>] values the hash of symbols and objects for attributes
     def initialize(values)
       set_values(values)

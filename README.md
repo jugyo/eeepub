@@ -68,6 +68,12 @@ Requirements
 * builder
 * eBook Reader :)
 
+Links
+-------
+
+* Documentation: [http://yardoc.org/docs/jugyo-eeepub](http://yardoc.org/docs/jugyo-eeepub)
+* Source code: [http://github.com/jugyo/eeepub](http://github.com/jugyo/eeepub)
+
 Copyright
 -------
 

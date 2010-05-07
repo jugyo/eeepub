@@ -20,7 +20,7 @@ module EeePub
         builder.container :xmlns => "urn:oasis:names:tc:opendocument:xmlns:container", :version => "1.0" do
           builder.rootfiles do
             rootfiles.each do |i|
-              builder.rootfile create_build_option(i)
+              builder.rootfile convert_to_xml_attributes(i)
             end
           end
         end

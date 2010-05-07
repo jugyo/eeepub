@@ -94,7 +94,7 @@ module EeePub
     #
     # @param [Hash<Symbol, Object>] hash the hash of symbols and objects for xml attributes
     # @return [Hash<String, Object>] the options for xml attributes
-    def create_build_option(hash)
+    def convert_to_xml_attributes(hash)
       result = {}
       hash.each do |k, v|
         key = k.to_s.gsub('_', '-').to_sym

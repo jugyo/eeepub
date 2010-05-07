@@ -72,12 +72,14 @@ module EeePub
     end
 
     # Set container
+    #
+    # @param [EeePub::OCF::Container or args for EeePub::OCF::Container]
     def container=(arg)
-      case arg
-      when String
-        @container = EeePub::OCF::Container.new(arg)
-      else
+      if arg.is_a?(EeePub::OCF::Container)
         @container = arg
+      else
+        # TODO: spec
+        @container = EeePub::OCF::Container.new(arg)
       end
     end
 

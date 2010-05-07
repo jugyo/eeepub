@@ -31,13 +31,8 @@ module EeePub
       when String
         [{:value => @identifier, :id => unique_identifier}]
       when Hash
-        if @identifier.size == 1
-          key = @identifier.keys[0]
-          [{:scheme => key, :value => @identifier[key], :id => unique_identifier}]
-        else
-          @identifier[:id] = unique_identifier
-          [@identifier]
-        end
+        @identifier[:id] = unique_identifier
+        [@identifier]
       else
         @identifier
       end

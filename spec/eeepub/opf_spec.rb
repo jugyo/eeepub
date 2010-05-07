@@ -4,7 +4,7 @@ require 'date'
 describe "EeePub::OPF" do
   before do
     @opf = EeePub::OPF.new(
-      :identifier => {'ISBN' => '978-4-00-310101-8'},
+      :identifier => {:value => '978-4-00-310101-8', :scheme => 'ISBN'},
       :files => ['foo.html', 'bar.html', 'picture.png'],
       :ncx => 'toc.ncx'
     )
@@ -75,13 +75,6 @@ describe "EeePub::OPF" do
 
     context 'specify as Hash' do
       before { @opf.identifier = {:scheme => 'ISBN', :value => '978-4-00-310101-8'} }
-      it 'should return value' do
-        @opf.identifier.should == [{:scheme => 'ISBN', :value => '978-4-00-310101-8', :id => @opf.unique_identifier}]
-      end
-    end
-
-    context 'specify as Hash(scheme => value)' do
-      before { @opf.identifier = {'ISBN' => '978-4-00-310101-8'} }
       it 'should return value' do
         @opf.identifier.should == [{:scheme => 'ISBN', :value => '978-4-00-310101-8', :id => @opf.unique_identifier}]
       end

@@ -9,7 +9,7 @@ epub = EeePub::Basic.new(
   :creator => 'jugyo',
   :publisher => 'jugyo.org',
   :date => "2010-05-06",
-  :id => {'URL' => 'http://example.com/book/foo'},
+  :id => {:scheme => 'URL', :value => 'http://example.com/book/foo'},
   :uid => 'http://example.com/book/foo'
 )
 epub.files << File.join(dir, 'foo.html')

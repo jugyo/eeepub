@@ -44,7 +44,7 @@ Create OPF:
 
     EeePub::OPF.new(
       :title => 'sample',
-      :identifier => {'ISBN' => '0-0000000-0-0'},
+      :identifier => {:value => '0-0000000-0-0', :scheme => 'ISBN'},
       :manifest => ['foo.html', 'bar.html'],
       :ncx => 'toc.ncx'
     ).save(File.join('sample', 'content.opf'))

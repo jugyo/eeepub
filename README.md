@@ -3,31 +3,28 @@ EeePub
 
 EeePub is a Ruby ePub generator.
 
-Note
--------
-
-I am thinking more better API now...
-
 Usage
 -------
 
-### Basic
+    epub = EeePub.make do
+      title       'sample'
+      creator     'jugyo'
+      publisher   'jugyo.org'
+      date        '2010-05-06'
+      identifier  'http://example.com/book/foo', :scheme => 'URL'
+      uid         'http://example.com/book/foo'
 
-    epub = EeePub::Basic.new(
-      :title => 'simple',
-      :creator => 'jugyo',
-      :publisher => 'jugyo.org',
-      :date => "2010-05-06",
-      :id => {'URL' => 'http://example.com/book/foo'},
-      :uid => 'http://example.com/book/foo'
-    )
-    epub.files << '/path/to/foo.html'
-    epub.files << '/path/to/bar.html'
-    epub.nav << {:label => '1. foo', :content => 'foo.html'}
-    epub.nav << {:label => '2. bar', :content => 'bar.html'}
+      files ['/path/to/foo.html'), '/path/to/bar.html')]
+      nav [
+        {:label => '1. foo', :content => 'foo.html', :nav => [
+          {:label => '1.1 foo-1', :content => 'foo.html#foo-1'}
+        ]},
+        {:label => '1. bar', :content => 'bar.html'}
+      ]
+    end
     epub.save('sample.epub')
 
-### Raw
+### Raw Level API
 
 Create NCX:
 

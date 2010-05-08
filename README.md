@@ -14,7 +14,7 @@ Usage
       identifier  'http://example.com/book/foo', :scheme => 'URL'
       uid         'http://example.com/book/foo'
 
-      files ['/path/to/foo.html'), '/path/to/bar.html')]
+      files ['/path/to/foo.html', '/path/to/bar.html']
       nav [
         {:label => '1. foo', :content => 'foo.html', :nav => [
           {:label => '1.1 foo-1', :content => 'foo.html#foo-1'}

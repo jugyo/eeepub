@@ -5,7 +5,8 @@ require 'eeepub'
 require 'spec'
 require 'spec/autorun'
 require 'nokogiri'
+require 'rr'
 
 Spec::Runner.configure do |config|
-  
+  config.mock_with :rr
 end

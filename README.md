@@ -24,7 +24,7 @@ Usage
     end
     epub.save('sample.epub')
 
-### Raw Level API
+### Low Level API
 
 Create NCX:
 

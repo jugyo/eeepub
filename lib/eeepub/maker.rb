@@ -28,6 +28,11 @@ module EeePub
       :creator,
       :publisher,
       :date,
+      :language,
+      :subject,
+      :description,
+      :rights,
+      :relation
     ].each do |name|
       class_eval <<-DELIM
         def #{name}(value)
@@ -85,6 +90,11 @@ module EeePub
           :creator => @creators,
           :publisher => @publishers,
           :date => @dates,
+          :language => @languages,
+          :subject => @subjects,
+          :description => @descriptions,
+          :rights => @rightss,
+          :relation => @relations,
           :manifest => @files.map{|i| File.basename(i)},
           :ncx => @ncx_file
         ).save(File.join(dir, @opf_file))

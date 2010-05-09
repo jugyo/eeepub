@@ -7,6 +7,11 @@ describe "EeePub::Maker" do
       creator 'jugyo'
       publisher 'jugyo.org'
       date "2010-05-06"
+      language 'en'
+      subject 'epub sample'
+      description 'this is epub sample'
+      rights 'xxx'
+      relation 'xxx'
       identifier 'http://example.com/book/foo', :scheme => 'URL'
       uid 'http://example.com/book/foo'
       ncx_file 'toc.ncx'
@@ -50,6 +55,11 @@ describe "EeePub::Maker" do
       :title => ["sample"],
       :creator => ["jugyo"],
       :date => ["2010-05-06"],
+      :language => ['en'],
+      :subject => ['epub sample'],
+      :description => ['this is epub sample'],
+      :rights => ['xxx'],
+      :relation => ['xxx'],
       :ncx => "toc.ncx",
       :publisher => ["jugyo.org"],
       :identifier => [{:value => "http://example.com/book/foo", :scheme => "URL"}],

@@ -46,7 +46,32 @@ module EeePub
     def save(filename)
       Dir.mktmpdir do |dir|
         prepare(dir)
-        super
+
+        NCX.new(
+          :uid => @uid,
+          :title => @titles[0],
+          :nav => @nav
+        ).save(File.join(dir, @ncx_file))
+
+        OPF.new(
+          :title => @titles,
+          :identifier => @identifiers,
+          :creator => @creators,
+          :publisher => @publishers,
+          :date => @dates,
+          :language => @languages,
+          :subject => @subjects,
+          :description => @descriptions,
+          :rights => @rightss,
+          :relation => @relations,
+          :manifest => @files.map{|i| File.basename(i)},
+          :ncx => @ncx_file
+        ).save(File.join(dir, @opf_file))
+
+        OCF.new(
+          :dir => dir,
+          :container => @opf_file
+        ).save(filename)
       end
     end
 
@@ -58,6 +83,10 @@ module EeePub
         filename = File.join(dir, "section_#{index}.html")
         File.open(filename, 'w') { |file| file.write section[1] }
         filenames << filename
+      end
+
+      assets.each do |file|
+        FileUtils.cp(file, dir)
       end
 
       files(filenames + assets)

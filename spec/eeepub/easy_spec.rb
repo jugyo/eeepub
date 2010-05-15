@@ -44,6 +44,8 @@ HTML
 
   it 'spec for prepare' do
     Dir.mktmpdir do |dir|
+      mock(FileUtils).cp('image.png', dir)
+
       @easy.send(:prepare, dir)
 
       file1 = File.join(dir, 'section_0.html')

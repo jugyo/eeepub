@@ -33,12 +33,16 @@ module EeePub
   class Easy < EeePub::Maker
     attr_reader :sections, :assets
 
+    # @param [Proc] block the block for initialize
     def initialize(&block)
       @sections = []
       @assets = []
       super
     end
 
+    # Save as ePub file
+    #
+    # @param [String] filename the ePub file name to save
     def save(filename)
       Dir.mktmpdir do |dir|
         prepare(dir)

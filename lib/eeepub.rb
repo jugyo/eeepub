@@ -3,6 +3,7 @@ require 'eeepub/opf'
 require 'eeepub/ocf'
 require 'eeepub/ncx'
 require 'eeepub/maker'
+require 'eeepub/easy'
 
 module EeePub
   # Make ePub

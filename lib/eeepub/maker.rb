@@ -75,7 +75,8 @@ module EeePub
     def save(filename)
       Dir.mktmpdir do |dir|
         @files.each do |file|
-          FileUtils.cp(file, dir)
+          FileUtils.mkdir_p(File.join(dir, file[:dir])) if file[:dir]
+          FileUtils.cp(file[:path], File.join(dir, (file[:dir] || '')))
         end
 
         NCX.new(
@@ -95,7 +96,9 @@ module EeePub
           :description => @descriptions,
           :rights => @rightss,
           :relation => @relations,
-          :manifest => @files.map{|i| File.basename(i)},
+          :manifest => @files.map{|i|
+            i[:dir] ? File.join(i[:dir], File.basename(i[:path])) : File.basename(i[:path])
+          },
           :ncx => @ncx_file
         ).save(File.join(dir, @opf_file))
 

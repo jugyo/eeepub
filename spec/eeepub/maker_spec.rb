@@ -72,4 +72,53 @@ describe "EeePub::Maker" do
 
     @maker.save('test.epub')
   end
+
+  describe "files as hash" do
+    before do
+      @maker = EeePub::Maker.new do
+        title 'sample'
+        creator 'jugyo'
+        publisher 'jugyo.org'
+        date "2010-05-06"
+        language 'en'
+        subject 'epub sample'
+        description 'this is epub sample'
+        rights 'xxx'
+        relation 'xxx'
+        identifier 'http://example.com/book/foo', :scheme => 'URL'
+        uid 'http://example.com/book/foo'
+        ncx_file 'toc.ncx'
+        opf_file 'content.opf'
+        files [{:dir => 'foo', :path => 'foo.html'}, {:dir => 'bar', :path => 'bar.html'}]
+        nav [
+          {:label => '1. foo', :content => 'foo.html'},
+          {:label => '1. bar', :content => 'bar.html'}
+        ]
+      end
+    end
+
+    it 'should save' do
+      stub(FileUtils).cp.with_any_args
+      stub(FileUtils).mkdir_p.with_any_args
+      mock(Dir).mktmpdir {|i| i.call('/tmp')}
+      mock(EeePub::NCX).new.with_any_args { stub!.save }
+      mock(EeePub::OPF).new(
+        :title => ["sample"],
+        :creator => ["jugyo"],
+        :date => ["2010-05-06"],
+        :language => ['en'],
+        :subject => ['epub sample'],
+        :description => ['this is epub sample'],
+        :rights => ['xxx'],
+        :relation => ['xxx'],
+        :ncx => "toc.ncx",
+        :publisher => ["jugyo.org"],
+        :identifier => [{:value => "http://example.com/book/foo", :scheme => "URL"}],
+        :manifest => ["foo/foo.html", "bar/bar.html"]
+      ) { stub!.save }
+      mock(EeePub::OCF).new.with_any_args { stub!.save }
+
+      @maker.save('test.epub')
+    end
+  end
 end

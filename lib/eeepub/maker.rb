@@ -75,8 +75,13 @@ module EeePub
     def save(filename)
       Dir.mktmpdir do |dir|
         @files.each do |file|
-          FileUtils.mkdir_p(File.join(dir, file[:dir])) if file[:dir]
-          FileUtils.cp(file[:path], File.join(dir, (file[:dir] || '')))
+          case file
+          when String
+            FileUtils.cp(file, dir)
+          when Hash
+            FileUtils.mkdir_p(File.join(dir, file[:dir])) if file[:dir]
+            FileUtils.cp(file[:path], File.join(dir, (file[:dir] || '')))
+          end
         end
 
         NCX.new(
@@ -96,8 +101,13 @@ module EeePub
           :description => @descriptions,
           :rights => @rightss,
           :relation => @relations,
-          :manifest => @files.map{|i|
-            i[:dir] ? File.join(i[:dir], File.basename(i[:path])) : File.basename(i[:path])
+          :manifest => @files.map{|file|
+            case file
+            when String
+              File.basename(file)
+            when Hash
+              file[:dir] ? File.join(file[:dir], File.basename(file[:path])) : File.basename(file[:path])
+            end
           },
           :ncx => @ncx_file
         ).save(File.join(dir, @opf_file))

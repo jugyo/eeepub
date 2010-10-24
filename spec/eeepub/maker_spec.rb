@@ -89,7 +89,7 @@ describe "EeePub::Maker" do
         uid 'http://example.com/book/foo'
         ncx_file 'toc.ncx'
         opf_file 'content.opf'
-        files [{:dir => 'foo', :path => 'foo.html'}, {:dir => 'bar', :path => 'bar.html'}]
+        files [{'foo.html' => 'foo/bar'}, {'bar.html' => 'foo/bar/baz'}]
         nav [
           {:label => '1. foo', :content => 'foo.html'},
           {:label => '1. bar', :content => 'bar.html'}
@@ -114,7 +114,7 @@ describe "EeePub::Maker" do
         :ncx => "toc.ncx",
         :publisher => ["jugyo.org"],
         :identifier => [{:value => "http://example.com/book/foo", :scheme => "URL"}],
-        :manifest => ["foo/foo.html", "bar/bar.html"]
+        :manifest => ["foo/bar/foo.html", "foo/bar/baz/bar.html"]
       ) { stub!.save }
       mock(EeePub::OCF).new.with_any_args { stub!.save }
 

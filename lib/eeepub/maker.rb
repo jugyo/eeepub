@@ -79,8 +79,10 @@ module EeePub
           when String
             FileUtils.cp(file, dir)
           when Hash
-            FileUtils.mkdir_p(File.join(dir, file[:dir])) if file[:dir]
-            FileUtils.cp(file[:path], File.join(dir, (file[:dir] || '')))
+            file_path, dir_path = *file.first
+            dest_dir = File.join(dir, dir_path)
+            FileUtils.mkdir_p(dest_dir)
+            FileUtils.cp(file_path, dest_dir)
           end
         end
 
@@ -106,7 +108,8 @@ module EeePub
             when String
               File.basename(file)
             when Hash
-              file[:dir] ? File.join(file[:dir], File.basename(file[:path])) : File.basename(file[:path])
+              file_path, dir_path = *file.first
+              File.join(dir_path, File.basename(file_path))
             end
           },
           :ncx => @ncx_file

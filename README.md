@@ -61,7 +61,6 @@ Install
 Requirements
 -------
 
-* ruby 1.8.7
 * builder
 * eBook Reader :)
 

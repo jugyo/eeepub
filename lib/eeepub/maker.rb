@@ -25,7 +25,6 @@ module EeePub
   class Maker
     [
       :title,
-      :creator,
       :publisher,
       :date,
       :language,
@@ -57,6 +56,11 @@ module EeePub
     def identifier(id, options)
       @identifiers ||= []
       @identifiers << {:value => id, :scheme => options[:scheme]}
+    end
+
+    def creator(name, options)
+      @creators ||= []
+      @creators << {:value => name, :role => options[:role]}
     end
 
     # @param [Proc] block the block for initialize

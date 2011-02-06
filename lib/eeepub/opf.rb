@@ -70,7 +70,14 @@ module EeePub
           builder.dc :identifier, i[:value], attrs
         end
 
-        [:title, :language, :subject, :description, :relation, :creator, :publisher, :date, :rights].each do |i|
+        creator.each do |i|
+          attrs = {}
+          attrs['opf:role'] = i[:role] if i[:role]
+          attrs['opf:file-as'] = i[:file_as] if i[:file_as]
+          builder.dc :creator, i[:value], attrs
+        end
+
+        [:title, :language, :subject, :description, :relation, :publisher, :date, :rights].each do |i|
           value = self.send(i)
           next unless value
 

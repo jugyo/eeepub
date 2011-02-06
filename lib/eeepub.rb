@@ -1,3 +1,4 @@
+require 'eeepub/version'
 require 'eeepub/container_item'
 require 'eeepub/opf'
 require 'eeepub/ocf'

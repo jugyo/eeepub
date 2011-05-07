@@ -94,7 +94,6 @@ module EeePub
       create_epub do
         Zip::Archive.open(output_path, Zip::CREATE | Zip::TRUNC) do |zip|
           Dir.glob('**/*').each do |path|
-            puts path
             if File.directory?(path)
               zip.add_dir(path)
             else
@@ -104,21 +103,19 @@ module EeePub
         end
       end
     end
-
+    
+    # Stream OCF
+    #
+    # @return [String] streaming output of the zip/epub file.
     def render
       create_epub do
         buffer = Zip::Archive.open_buffer(Zip::CREATE) do |zip|
           Dir.glob('**/*').each do |path|
-            if File.directory?(path)
-              zip.add_buffer(path)
-            else
-              zip.add_buffer(path)
-            end
+            zip.add_buffer(path, path)
           end
         end
-        
-        buffer.force_encoding("ASCII-8BIT") if str.respond_to?(:force_encoding)
-        buffer
+
+        return buffer
       end
     end
 

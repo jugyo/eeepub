@@ -40,4 +40,10 @@ describe "EeePub::OCF" do
     @ocf.save(output_path)
     File.exists?(output_path)
   end
+
+  it 'should stream epub' do
+    output = @ocf.render
+    output.size.should == 370
+    output.is_binary_data?.should be_true
+  end
 end

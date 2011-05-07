@@ -10,8 +10,6 @@ rescue LoadError => e
   puts "RSpec not installed"
 end
 
-task :spec => :check_dependencies
-
 task :default => :spec
 
 begin

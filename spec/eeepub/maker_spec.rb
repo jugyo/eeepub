@@ -42,7 +42,7 @@ describe "EeePub::Maker" do
 
   it 'should save' do
     stub(FileUtils).cp.with_any_args
-    mock(Dir).mktmpdir {|i| i.call('/tmp')}
+    mock(Dir).mktmpdir { '/tmp' }
     mock(EeePub::NCX).new(
       :title => "sample",
       :nav => [
@@ -100,7 +100,7 @@ describe "EeePub::Maker" do
     it 'should save' do
       stub(FileUtils).cp.with_any_args
       stub(FileUtils).mkdir_p.with_any_args
-      mock(Dir).mktmpdir {|i| i.call('/tmp')}
+      mock(Dir).mktmpdir { '/tmp' }
       mock(EeePub::NCX).new.with_any_args { stub!.save }
       mock(EeePub::OPF).new(
         :title => ["sample"],

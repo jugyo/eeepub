@@ -73,6 +73,19 @@ module EeePub
     #
     # @param [String] filename the ePub file name to save
     def save(filename)
+      create_epub.save(filename)
+    end
+
+    # instead of saving to file, output the file contents. 
+    # important for serving on-the-fly doc creation from
+    # web interface where we don't want to allow file system
+    # writes (Heroku, et al.)
+    def render
+      create_epub.render
+    end
+
+    private
+    def create_epub
       Dir.mktmpdir do |dir|
         @files.each do |file|
           case file
@@ -118,8 +131,9 @@ module EeePub
         OCF.new(
           :dir => dir,
           :container => @opf_file
-        ).save(filename)
+        )
       end
     end
+
   end
 end

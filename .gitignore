@@ -3,7 +3,6 @@
 coverage
 doc
 pkg
-*.gemspec
 *.epub
 .rvmrc
 Gemfile.lock

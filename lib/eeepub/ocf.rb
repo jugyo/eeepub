@@ -1,3 +1,5 @@
+require 'zipruby'
+
 module EeePub
   # Class to create OCF
   class OCF
@@ -89,6 +91,39 @@ module EeePub
     def save(output_path)
       output_path = File.expand_path(output_path)
 
+      create_epub do
+        Zip::Archive.open(output_path, Zip::CREATE | Zip::TRUNC) do |zip|
+          Dir.glob('**/*').each do |path|
+            puts path
+            if File.directory?(path)
+              zip.add_dir(path)
+            else
+              zip.add_file(path)
+            end
+          end
+        end
+      end
+    end
+
+    def render
+      create_epub do
+        buffer = Zip::Archive.open_buffer(Zip::CREATE) do |zip|
+          Dir.glob('**/*').each do |path|
+            if File.directory?(path)
+              zip.add_buffer(path)
+            else
+              zip.add_buffer(path)
+            end
+          end
+        end
+        
+        buffer.force_encoding("ASCII-8BIT") if str.respond_to?(:force_encoding)
+        buffer
+      end
+    end
+
+    private
+    def create_epub
       FileUtils.chdir(dir) do
         File.open('mimetype', 'w') do |f|
           f << 'application/epub+zip'
@@ -98,10 +133,9 @@ module EeePub
         FileUtils.mkdir_p(meta_inf)
 
         container.save(File.join(meta_inf, 'container.xml'))
-
-        %x(zip -X9 \"#{output_path}\" mimetype)
-        %x(zip -Xr9D \"#{output_path}\" * -xi mimetype)
+        yield
       end
+
     end
   end
 end

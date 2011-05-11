@@ -111,7 +111,11 @@ module EeePub
       create_epub do
         buffer = Zip::Archive.open_buffer(Zip::CREATE) do |zip|
           Dir.glob('**/*').each do |path|
-            zip.add_buffer(path, path)
+            if File.directory?(path)
+              zip.add_buffer(path, path)
+            else
+              zip.add_buffer(path, File.read(path))
+            end
           end
         end
 

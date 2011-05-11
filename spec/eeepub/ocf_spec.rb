@@ -43,7 +43,7 @@ describe "EeePub::OCF" do
 
   it 'should stream epub' do
     output = @ocf.render
-    output.size.should == 370
+    output.size.should == 523
     output.is_binary_data?.should be_true
   end
 end

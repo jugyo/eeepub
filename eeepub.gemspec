@@ -15,10 +15,10 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency(%q<zipruby>, ["~> 0.3"])
-  s.add_runtime_dependency(%q<builder>, ["~> 3.0"])
-  s.add_development_dependency(%q<rspec>, ["~> 2.0"])
-  s.add_development_dependency(%q<rr>, ["~> 1.0"])
-  s.add_development_dependency(%q<simplecov>, ["~> 0.4"])
-  s.add_development_dependency(%q<nokogiri>, ["~> 1.4"])
+  s.add_dependency "builder"
+  s.add_dependency "zipruby"
+  s.add_development_dependency "rspec"
+  s.add_development_dependency "nokogiri"
+  s.add_development_dependency "rr"
+  s.add_development_dependency "simplecov"  
 end

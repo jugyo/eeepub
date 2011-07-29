@@ -97,7 +97,7 @@ module EeePub
             if File.directory?(path)
               zip.add_dir(path)
             else
-              zip.add_file(path)
+              zip.add_file(path, path)
             end
           end
         end
@@ -112,9 +112,9 @@ module EeePub
         buffer = Zip::Archive.open_buffer(Zip::CREATE) do |zip|
           Dir.glob('**/*').each do |path|
             if File.directory?(path)
-              zip.add_buffer(path, path)
+              zip.add_dir(path)
             else
-              zip.add_buffer(path, File.read(path))
+              zip.add_file(path, path)
             end
           end
         end

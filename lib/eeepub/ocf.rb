@@ -102,6 +102,7 @@ module EeePub
           end
         end
       end
+      FileUtils.remove_entry_secure dir
     end
     
     # Stream OCF
@@ -118,6 +119,7 @@ module EeePub
             end
           end
         end
+        FileUtils.remove_entry_secure dir
 
         return buffer
       end

@@ -4,14 +4,21 @@ require 'fileutils'
 module EeePub
   # The class to make ePub easily
   #
+  # Note on unique identifiers:
+  #
+  #   At least one 'identifier' must be the unique identifer represented by the name
+  #   given to 'uid' and set via the hash option :id => {name}.  The default name for 
+  #   uid is 'BookId' and doesn't need to be specified explicitly.  If no identifier is
+  #   marked as the unique identifier, the first one give will be chosen.
+  #
   # @example
   #   epub = EeePub.make do
   #     title       'sample'
   #     creator     'jugyo'
   #     publisher   'jugyo.org'
   #     date        '2010-05-06'
-  #     identifier  'http://example.com/book/foo', :scheme => 'URL'
-  #     uid         'http://example.com/book/foo'
+  #     uid         'BookId'
+  #     identifier  'http://example.com/book/foo', :scheme => 'URL', :id => 'BookId'
   #
   #     files ['/path/to/foo.html', '/path/to/bar.html']
   #     nav [
@@ -56,7 +63,7 @@ module EeePub
 
     def identifier(id, options)
       @identifiers ||= []
-      @identifiers << {:value => id, :scheme => options[:scheme]}
+      @identifiers << {:value => id, :scheme => options[:scheme], :id => options[:id]}
     end
 
     # @param [Proc] block the block for initialize
@@ -87,6 +94,12 @@ module EeePub
     private
 
     def create_epub
+      @uid ||= 'BookId'
+      unique_identifier = @identifiers.select{ |i| i[:id] == @uid }.first
+      unless unique_identifier
+        unique_identifier = @identifiers.first
+        unique_identifier[:id] = @uid
+      end
       dir = Dir.mktmpdir
       @files.each do |file|
         case file
@@ -101,13 +114,14 @@ module EeePub
       end
 
       NCX.new(
-        :uid => @uid,
+        :uid => @identifiers.select{ |i| i[:id] == @uid }.first,
         :title => @titles[0],
         :nav => @nav
       ).save(File.join(dir, @ncx_file))
 
       OPF.new(
         :title => @titles,
+        :unique_identifier => @uid,
         :identifier => @identifiers,
         :creator => @creators,
         :publisher => @publishers,

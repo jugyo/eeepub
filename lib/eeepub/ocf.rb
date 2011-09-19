@@ -110,7 +110,7 @@ module EeePub
     # @return [String] streaming output of the zip/epub file.
     def render
       create_epub do
-        temp_file = Tempfile.new
+        temp_file = Tempfile.new("ocf")
         self.save(temp_file.path)
         return temp_file.read
       end

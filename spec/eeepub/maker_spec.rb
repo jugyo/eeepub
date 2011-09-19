@@ -28,7 +28,7 @@ describe "EeePub::Maker" do
   it { @maker.instance_variable_get(:@creators).should == ['jugyo'] }
   it { @maker.instance_variable_get(:@publishers).should == ['jugyo.org'] }
   it { @maker.instance_variable_get(:@dates).should == ["2010-05-06"] }
-  it { @maker.instance_variable_get(:@identifiers).should == [{:value => 'http://example.com/book/foo', :scheme => 'URL'}] }
+  it { @maker.instance_variable_get(:@identifiers).should == [{:value => 'http://example.com/book/foo', :scheme => 'URL', :id => nil}] }
   it { @maker.instance_variable_get(:@uid).should == 'http://example.com/book/foo' }
   it { @maker.instance_variable_get(:@ncx_file).should == 'toc.ncx' }
   it { @maker.instance_variable_get(:@opf_file).should == 'content.opf' }
@@ -49,7 +49,7 @@ describe "EeePub::Maker" do
         {:label => '1. foo', :content => 'foo.html'},
         {:label => '1. bar', :content => 'bar.html'}
       ],
-      :uid => "http://example.com/book/foo"
+      :uid=>{:value=>"http://example.com/book/foo", :scheme=>"URL", :id=>"http://example.com/book/foo"}
     ) { stub!.save }
     mock(EeePub::OPF).new(
       :title => ["sample"],
@@ -62,7 +62,8 @@ describe "EeePub::Maker" do
       :relation => ['xxx'],
       :ncx => "toc.ncx",
       :publisher => ["jugyo.org"],
-      :identifier => [{:value => "http://example.com/book/foo", :scheme => "URL"}],
+      :unique_identifier=>"http://example.com/book/foo",
+      :identifier => [{:value => "http://example.com/book/foo", :scheme => "URL", :id => "http://example.com/book/foo"}],
       :manifest => ['foo.html', 'bar.html']
     ) { stub!.save }
     mock(EeePub::OCF).new(
@@ -113,7 +114,8 @@ describe "EeePub::Maker" do
         :relation => ['xxx'],
         :ncx => "toc.ncx",
         :publisher => ["jugyo.org"],
-        :identifier => [{:value => "http://example.com/book/foo", :scheme => "URL"}],
+        :unique_identifier=>"http://example.com/book/foo",
+        :identifier => [{:value => "http://example.com/book/foo", :scheme => "URL", :id=>"http://example.com/book/foo"}],
         :manifest => ["foo/bar/foo.html", "foo/bar/baz/bar.html"]
       ) { stub!.save }
       mock(EeePub::OCF).new.with_any_args { stub!.save }

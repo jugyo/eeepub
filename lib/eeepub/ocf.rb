@@ -1,4 +1,4 @@
-require 'zipruby'
+require 'zip/zip'
 
 module EeePub
   # Class to create OCF
@@ -92,15 +92,15 @@ module EeePub
       output_path = File.expand_path(output_path)
 
       create_epub do
-        Zip::Archive.open(output_path, Zip::CREATE | Zip::TRUNC) do |zip|
-          Dir.glob('**/*').each do |path|
-            if File.directory?(path)
-              zip.add_dir(path)
-            else
-              zip.add_file(path, path)
-            end
-          end
+        mimetype = Zip::ZipOutputStream::open(output_path) do |os|
+          os.put_next_entry("mimetype", nil, nil, Zip::ZipEntry::STORED, Zlib::NO_COMPRESSION)
+          os << "application/epub+zip"
         end
+        zipfile = Zip::ZipFile.open(output_path)
+        Dir.glob('**/*').each do |path|
+          zipfile.add(path, path)
+        end
+        zipfile.commit
       end
       FileUtils.remove_entry_secure dir
     end
@@ -110,28 +110,15 @@ module EeePub
     # @return [String] streaming output of the zip/epub file.
     def render
       create_epub do
-        buffer = Zip::Archive.open_buffer(Zip::CREATE) do |zip|
-          Dir.glob('**/*').each do |path|
-            if File.directory?(path)
-              zip.add_dir(path)
-            else
-              zip.add_file(path, path)
-            end
-          end
-        end
-        FileUtils.remove_entry_secure dir
-
-        return buffer
+        temp_file = Tempfile.new
+        self.save(temp_file.path)
+        return temp_file.read
       end
     end
 
     private
     def create_epub
       FileUtils.chdir(dir) do
-        File.open('mimetype', 'w') do |f|
-          f << 'application/epub+zip'
-        end
-
         meta_inf = 'META-INF'
         FileUtils.mkdir_p(meta_inf)
 

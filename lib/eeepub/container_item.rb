@@ -73,7 +73,7 @@ module EeePub
     # @return [String] the media-type
     def guess_media_type(filename)
       case filename
-      when /.*\.html?$/i
+      when /.*\.x?html?$/i
         'application/xhtml+xml'
       when /.*\.css$/i
         'text/css'

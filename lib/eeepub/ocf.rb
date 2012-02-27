@@ -90,30 +90,28 @@ module EeePub
     # @param [String] output_path the output file path of ePub
     def save(output_path)
       output_path = File.expand_path(output_path)
-
-      create_epub do
-        mimetype = Zip::ZipOutputStream::open(output_path) do |os|
-          os.put_next_entry("mimetype", nil, nil, Zip::ZipEntry::STORED, Zlib::NO_COMPRESSION)
-          os << "application/epub+zip"
-        end
-        zipfile = Zip::ZipFile.open(output_path)
-        Dir.glob('**/*').each do |path|
-          zipfile.add(path, path)
-        end
-        zipfile.commit
-      end
-      FileUtils.remove_entry_secure dir
+      File.open(output_path, 'w') { |f| f.write render.read }
     end
     
     # Stream OCF
     #
     # @return [String] streaming output of the zip/epub file.
     def render
-      create_epub do
-        temp_file = Tempfile.new("ocf")
-        self.save(temp_file.path)
-        return temp_file.read
+      zip = Zip::ZipOutputStream.write_buffer do |os|
+
+        os.put_next_entry("mimetype", nil, nil, Zip::ZipEntry::STORED, Zlib::NO_COMPRESSION)
+        os << "application/epub+zip"
+
+        Dir.glob('**/*').each do |path|
+          next if File.directory?(path)
+          os.put_next_entry(path)
+          os << File.read(path)
+        end
       end
+
+      FileUtils.remove_entry_secure dir
+
+      return zip
     end
 
     private

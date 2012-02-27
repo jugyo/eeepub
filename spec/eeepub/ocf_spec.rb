@@ -42,9 +42,10 @@ describe "EeePub::OCF" do
   end
 
   it 'should stream epub' do
-    pending
     output = @ocf.render
-    output.size.should == 134
-    output.is_binary_data?.should be_true
+    
+    # epub size won't always be the same
+    output.size.should be_between(171000, 172000)
+    output.should be_a_kind_of StringIO
   end
 end

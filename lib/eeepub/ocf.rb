@@ -98,6 +98,9 @@ module EeePub
         end
         zipfile = Zip::ZipFile.open(output_path)
         Dir.glob('**/*').each do |path|
+          puts path
+          puts "READABLE: #{File.readable?(path)}"
+          puts "SIZE: #{File.size(path)}"
           zipfile.add(path, path)
         end
         zipfile.commit

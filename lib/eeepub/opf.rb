@@ -14,6 +14,7 @@ module EeePub
                   :manifest,
                   :spine,
                   :guide,
+                  :cover,
                   :ncx,
                   :toc
 
@@ -83,6 +84,7 @@ module EeePub
             end
           end
         end
+        builder.meta(:name => 'cover', :content => self.cover) if self.cover
       end
     end
 

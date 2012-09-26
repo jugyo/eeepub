@@ -16,6 +16,7 @@ describe "EeePub::Maker" do
       uid 'http://example.com/book/foo'
       ncx_file 'toc.ncx'
       opf_file 'content.opf'
+      cover 'cover.jpg'
       files ['foo.html', 'bar.html']
       nav [
         {:label => '1. foo', :content => 'foo.html'},
@@ -32,6 +33,7 @@ describe "EeePub::Maker" do
   it { @maker.instance_variable_get(:@uid).should == 'http://example.com/book/foo' }
   it { @maker.instance_variable_get(:@ncx_file).should == 'toc.ncx' }
   it { @maker.instance_variable_get(:@opf_file).should == 'content.opf' }
+  it { @maker.instance_variable_get(:@cover).should == 'cover.jpg' }
   it { @maker.instance_variable_get(:@files).should == ['foo.html', 'bar.html'] }
   it { 
     @maker.instance_variable_get(:@nav).should == [
@@ -61,6 +63,7 @@ describe "EeePub::Maker" do
       :rights => ['xxx'],
       :relation => ['xxx'],
       :ncx => "toc.ncx",
+      :cover => 'cover.jpg',
       :publisher => ["jugyo.org"],
       :unique_identifier=>"http://example.com/book/foo",
       :identifier => [{:value => "http://example.com/book/foo", :scheme => "URL", :id => "http://example.com/book/foo"}],
@@ -90,6 +93,7 @@ describe "EeePub::Maker" do
         uid 'http://example.com/book/foo'
         ncx_file 'toc.ncx'
         opf_file 'content.opf'
+        cover 'cover.jpg'
         files [{'foo.html' => 'foo/bar'}, {'bar.html' => 'foo/bar/baz'}]
         nav [
           {:label => '1. foo', :content => 'foo.html'},
@@ -113,6 +117,7 @@ describe "EeePub::Maker" do
         :rights => ['xxx'],
         :relation => ['xxx'],
         :ncx => "toc.ncx",
+        :cover => 'cover.jpg',
         :publisher => ["jugyo.org"],
         :unique_identifier=>"http://example.com/book/foo",
         :identifier => [{:value => "http://example.com/book/foo", :scheme => "URL", :id=>"http://example.com/book/foo"}],

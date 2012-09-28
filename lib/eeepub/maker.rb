@@ -53,6 +53,7 @@ module EeePub
       :uid,
       :files,
       :nav,
+      :cover,
       :ncx_file,
       :opf_file
     ].each do |name|
@@ -130,6 +131,7 @@ module EeePub
         :subject => @subjects,
         :description => @descriptions,
         :rights => @rightss,
+        :cover => @cover,
         :relation => @relations,
         :manifest => @files.map{|file|
           case file

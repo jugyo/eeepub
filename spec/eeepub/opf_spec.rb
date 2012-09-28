@@ -118,7 +118,8 @@ describe "EeePub::OPF" do
         :relation => 'relation',
         :creator => 'creator',
         :publisher => 'publisher',
-        :rights => 'rights'
+        :rights => 'rights',
+        :cover => 'cover.jpg'
       )
     end
 
@@ -144,6 +145,10 @@ describe "EeePub::OPF" do
       identifier.attribute('id').value.should == @opf.unique_identifier
       identifier.attribute('scheme').value.should == @opf.identifier[0][:scheme]
       identifier.inner_text.should == @opf.identifier[0][:value]
+      
+      identifier = metadata.at('meta')
+      identifier.attribute('name').value.should == 'cover'
+      identifier.attribute('content').value.should == 'cover.jpg'      
     end
   end
 

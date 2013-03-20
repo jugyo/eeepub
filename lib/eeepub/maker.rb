@@ -7,7 +7,7 @@ module EeePub
   # Note on unique identifiers:
   #
   #   At least one 'identifier' must be the unique identifer represented by the name
-  #   given to 'uid' and set via the hash option :id => {name}.  The default name for 
+  #   given to 'uid' and set via the hash option :id => {name}.  The default name for
   #   uid is 'BookId' and doesn't need to be specified explicitly.  If no identifier is
   #   marked as the unique identifier, the first one give will be chosen.
   #
@@ -55,7 +55,8 @@ module EeePub
       :nav,
       :cover,
       :ncx_file,
-      :opf_file
+      :opf_file,
+      :guide
     ].each do |name|
       define_method(name) do |arg|
         instance_variable_set("@#{name}", arg)
@@ -84,7 +85,7 @@ module EeePub
       create_epub.save(filename)
     end
 
-    # instead of saving to file, output the file contents. 
+    # instead of saving to file, output the file contents.
     # important for serving on-the-fly doc creation from
     # web interface where we don't want to allow file system
     # writes (Heroku, et al.)
@@ -142,7 +143,8 @@ module EeePub
             File.join(dir_path, File.basename(file_path))
           end
         },
-        :ncx => @ncx_file
+        :ncx => @ncx_file,
+        :guide => @guide
       ).save(File.join(dir, @opf_file))
 
       OCF.new(

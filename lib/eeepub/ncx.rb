@@ -27,7 +27,7 @@ module EeePub
     def build_head(builder)
       builder.head do
         {
-          :uid => uid,
+          :uid => uid[:value],
           :depth => depth,
           :totalPageCount => total_page_count,
           :maxPageNumber => max_page_number

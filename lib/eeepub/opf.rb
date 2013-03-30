@@ -137,14 +137,12 @@ module EeePub
 
     def create_unique_item_id(filename, id_cache)
       basename = File.basename(filename)
-      unless id_cache[basename]
-        id_cache[basename] = 0
-        name = basename
-      else
-        name = "#{basename}-#{id_cache[basename]}"
-      end
+      id_cache[basename] ||= 0
+      name = "#{basename}-#{id_cache[basename]}"
+
       id_cache[basename] += 1
-      name
+
+      return name
     end
   end
 end

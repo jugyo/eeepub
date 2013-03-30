@@ -138,7 +138,7 @@ module EeePub
     def create_unique_item_id(filename, id_cache)
       basename = File.basename(filename)
       id_cache[basename] ||= 0
-      name = "#{basename}-#{id_cache[basename]}"
+      name = "id-#{basename}-#{id_cache[basename]}".gsub(/[^a-zA-Z0-9\-.]/, '-')
 
       id_cache[basename] += 1
 

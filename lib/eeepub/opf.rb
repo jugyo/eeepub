@@ -108,8 +108,12 @@ module EeePub
       return if guide.nil? || guide.empty?
 
       builder.guide do
-        guide.each do |i|
-          builder.reference convert_to_xml_attributes(i)
+        guide.each do |reference|
+          # Transform nav parameters into guide parameters
+          mapping = { :label => :title, :content => :href }
+          guide_ref = Hash[reference.map { |k,v| [mapping[k] || k, v] }]
+
+          builder.reference convert_to_xml_attributes(guide_ref)
         end
       end
     end

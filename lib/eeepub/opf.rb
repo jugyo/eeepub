@@ -108,8 +108,12 @@ module EeePub
       return if guide.nil? || guide.empty?
 
       builder.guide do
-        guide.each do |i|
-          builder.reference convert_to_xml_attributes(i)
+        guide.each do |reference|
+          # Transform nav parameters into guide parameters
+          mapping = { :label => :title, :content => :href }
+          guide_ref = Hash[reference.map { |k,v| [mapping[k] || k, v] }]
+
+          builder.reference convert_to_xml_attributes(guide_ref)
         end
       end
     end
@@ -137,14 +141,12 @@ module EeePub
 
     def create_unique_item_id(filename, id_cache)
       basename = File.basename(filename)
-      unless id_cache[basename]
-        id_cache[basename] = 0
-        name = basename
-      else
-        name = "#{basename}-#{id_cache[basename]}"
-      end
+      id_cache[basename] ||= 0
+      name = "id-#{basename}-#{id_cache[basename]}".gsub(/[^a-zA-Z0-9\-.]/, '-')
+
       id_cache[basename] += 1
-      name
+
+      return name
     end
   end
 end

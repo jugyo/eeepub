@@ -17,6 +17,7 @@ describe "EeePub::Maker" do
       ncx_file 'toc.ncx'
       opf_file 'content.opf'
       cover 'cover.jpg'
+      source 'http://example.com/book/foo'
       files ['foo.html', 'bar.html']
       nav [
         {:label => '1. foo', :content => 'foo.html'},
@@ -34,6 +35,7 @@ describe "EeePub::Maker" do
   it { @maker.instance_variable_get(:@ncx_file).should == 'toc.ncx' }
   it { @maker.instance_variable_get(:@opf_file).should == 'content.opf' }
   it { @maker.instance_variable_get(:@cover).should == 'cover.jpg' }
+  it { @maker.instance_variable_get(:@source).should == 'http://example.com/book/foo' }
   it { @maker.instance_variable_get(:@files).should == ['foo.html', 'bar.html'] }
   it { 
     @maker.instance_variable_get(:@nav).should == [
@@ -54,20 +56,22 @@ describe "EeePub::Maker" do
       :uid=>{:value=>"http://example.com/book/foo", :scheme=>"URL", :id=>"http://example.com/book/foo"}
     ) { stub!.save }
     mock(EeePub::OPF).new(
-      :title => ["sample"],
-      :creator => ["jugyo"],
-      :date => ["2010-05-06"],
-      :language => ['en'],
-      :subject => ['epub sample'],
-      :description => ['this is epub sample'],
-      :rights => ['xxx'],
-      :relation => ['xxx'],
-      :ncx => "toc.ncx",
-      :cover => 'cover.jpg',
-      :publisher => ["jugyo.org"],
+      :title=>["sample"],
       :unique_identifier=>"http://example.com/book/foo",
-      :identifier => [{:value => "http://example.com/book/foo", :scheme => "URL", :id => "http://example.com/book/foo"}],
-      :manifest => ['foo.html', 'bar.html']
+      :identifier=>[{:value=>"http://example.com/book/foo",:scheme=>"URL", :id=>"http://example.com/book/foo"}],
+      :creator=>["jugyo"],
+      :publisher=>["jugyo.org"],
+      :date=>["2010-05-06"],
+      :language=>["en"],
+      :subject=>["epub sample"],
+      :description=>["this is epub sample"],
+      :rights=>["xxx"],
+      :cover=>"cover.jpg",
+      :source=>"http://example.com/book/foo",
+      :relation=>["xxx"],
+      :manifest=>["foo.html", "bar.html"],
+      :ncx=>"toc.ncx",
+      :guide=>nil
     ) { stub!.save }
     mock(EeePub::OCF).new(
       :container => "content.opf",
@@ -94,6 +98,7 @@ describe "EeePub::Maker" do
         ncx_file 'toc.ncx'
         opf_file 'content.opf'
         cover 'cover.jpg'
+        source 'http://example.com/book/foo'
         files [{'foo.html' => 'foo/bar'}, {'bar.html' => 'foo/bar/baz'}]
         nav [
           {:label => '1. foo', :content => 'foo.html'},
@@ -108,20 +113,22 @@ describe "EeePub::Maker" do
       mock(Dir).mktmpdir { '/tmp' }
       mock(EeePub::NCX).new.with_any_args { stub!.save }
       mock(EeePub::OPF).new(
-        :title => ["sample"],
-        :creator => ["jugyo"],
-        :date => ["2010-05-06"],
-        :language => ['en'],
-        :subject => ['epub sample'],
-        :description => ['this is epub sample'],
-        :rights => ['xxx'],
-        :relation => ['xxx'],
-        :ncx => "toc.ncx",
-        :cover => 'cover.jpg',
-        :publisher => ["jugyo.org"],
-        :unique_identifier=>"http://example.com/book/foo",
-        :identifier => [{:value => "http://example.com/book/foo", :scheme => "URL", :id=>"http://example.com/book/foo"}],
-        :manifest => ["foo/bar/foo.html", "foo/bar/baz/bar.html"]
+          :title=>["sample"],
+          :unique_identifier=>"http://example.com/book/foo",
+          :identifier=>[{:value=>"http://example.com/book/foo", :scheme=>"URL", :id=>"http://example.com/book/foo"}],
+          :creator=>["jugyo"],
+          :publisher=>["jugyo.org"],
+          :date=>["2010-05-06"],
+          :language=>["en"],
+          :subject=>["epub sample"],
+          :description=>["this is epub sample"],
+          :rights=>["xxx"],
+          :cover=>"cover.jpg",
+          :source=>"http://example.com/book/foo",
+          :relation=>["xxx"],
+          :manifest=>["foo/bar/foo.html", "foo/bar/baz/bar.html"],
+          :ncx=>"toc.ncx",
+          :guide=>nil
       ) { stub!.save }
       mock(EeePub::OCF).new.with_any_args { stub!.save }
 

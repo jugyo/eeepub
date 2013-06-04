@@ -15,6 +15,7 @@ module EeePub
                   :spine,
                   :guide,
                   :cover,
+                  :source,
                   :ncx,
                   :toc
 
@@ -71,7 +72,7 @@ module EeePub
           builder.dc :identifier, i[:value], attrs
         end
 
-        [:title, :language, :subject, :description, :relation, :creator, :publisher, :date, :rights].each do |i|
+        [:title, :language, :subject, :description, :relation, :creator, :publisher, :date, :rights, :source].each do |i|
           value = self.send(i)
           next unless value
 

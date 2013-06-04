@@ -119,7 +119,8 @@ describe "EeePub::OPF" do
         :creator => 'creator',
         :publisher => 'publisher',
         :rights => 'rights',
-        :cover => 'cover.jpg'
+        :cover => 'cover.jpg',
+        :source => 'source'
       )
     end
 
@@ -136,6 +137,7 @@ describe "EeePub::OPF" do
         ['dc:relation', 'relation'],
         ['dc:creator', 'creator'],
         ['dc:publisher', 'publisher'],
+        ['dc:source', 'source'],
         ['dc:rights', 'rights'],
       ].each do |xpath, expect|
         metadata.xpath(xpath,

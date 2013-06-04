@@ -54,6 +54,7 @@ module EeePub
       :files,
       :nav,
       :cover,
+      :source,
       :ncx_file,
       :opf_file,
       :guide
@@ -133,6 +134,7 @@ module EeePub
         :description => @descriptions,
         :rights => @rightss,
         :cover => @cover,
+        :source => @source,
         :relation => @relations,
         :manifest => @files.map{|file|
           case file

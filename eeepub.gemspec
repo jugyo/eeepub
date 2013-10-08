@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "builder"
-  s.add_dependency "rubyzip"
+  s.add_dependency "rubyzip", "~> 0.9.9"
   s.add_development_dependency "rspec"
   s.add_development_dependency "nokogiri"
   s.add_development_dependency "rr"

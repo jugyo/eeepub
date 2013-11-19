@@ -102,9 +102,8 @@ module EeePub
         end
         zipfile.commit
       end
-      FileUtils.remove_entry_secure dir
     end
-    
+
     # Stream OCF
     #
     # @return [String] streaming output of the zip/epub file.

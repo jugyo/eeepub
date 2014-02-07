@@ -93,7 +93,7 @@ module EeePub
 
       create_epub do
         mimetype = Zip::ZipOutputStream::open(output_path) do |os|
-          os.put_next_entry("mimetype", nil, nil, Zip::ZipEntry::STORED, Zlib::NO_COMPRESSION)
+          os.put_next_entry("mimetype")
           os << "application/epub+zip"
         end
         zipfile = Zip::ZipFile.open(output_path)

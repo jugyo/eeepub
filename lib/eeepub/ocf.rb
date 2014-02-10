@@ -123,9 +123,23 @@ module EeePub
         FileUtils.mkdir_p(meta_inf)
 
         container.save(File.join(meta_inf, 'container.xml'))
+        write_ibook_font_file(meta_inf)
         yield
       end
+    end
 
+    def write_ibook_font_file(meta_inf)
+      content = %Q|
+        <?xml version="1.0" encoding="UTF-8"?>
+        <display_options>
+            <platform name="*">
+                <option name="specified-fonts">true</option>
+            </platform>
+        </display_options>
+      |
+      File.open(File.join(meta_inf,'com.apple.ibooks.display-options.xml'),'w') do |file|
+        file.write(content)
+      end
     end
   end
 end

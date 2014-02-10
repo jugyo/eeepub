@@ -138,7 +138,7 @@ module EeePub
         </display_options>
       |
       File.open(File.join(meta_inf,'com.apple.ibooks.display-options.xml'),'w') do |file|
-        file.write(content)
+        file.write(content.strip)
       end
     end
   end

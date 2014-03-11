@@ -1,7 +1,14 @@
 EeePub
 ======
 
-EeePub is a Ruby ePub generator.
+EeePub is a Ruby ePub generator.  This is a version of the eepub project from https://github.com/jugyo/eeepub, and had been modified to suit Inkshares' needs.  Main enhancements include:
+
+- Compatibility with Ruby 2.0
+- Compatibility with the latest version of Rubyzip (required to bundle epub files)
+- Support for the 'guide' ocf attribute, which allows an ebook maker to specify an HTML page for the book cover.
+- Passing unit tests
+
+Also of note, this project does not produce .mobi files for Kindle.  But, we recommend a very excellent service called Ebook Glue, https://ebookglue.com/, which provides an affordable API to convert .epub into .mobi files.
 
 Usage
 -------
@@ -68,9 +75,9 @@ Links
 -------
 
 * Documentation: [http://yardoc.org/docs/jugyo-eeepub](http://yardoc.org/docs/jugyo-eeepub)
-* Source code: [http://github.com/jugyo/eeepub](http://github.com/jugyo/eeepub)
+* Source code: [http://github.com/inkshares/eeepub](http://github.com/inkshares/eeepub)
 
 Copyright
 -------
 
-Copyright (c) 2010 jugyo. See LICENSE for details.
+Copyright (c) 2014 Inkshares. See LICENSE for details.

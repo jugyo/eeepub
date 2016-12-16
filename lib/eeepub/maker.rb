@@ -151,6 +151,9 @@ module EeePub
         :dir => dir,
         :container => @opf_file
       )
+
+      FileUtils.remove_entry_secure dir
+
     end
   end
 end
